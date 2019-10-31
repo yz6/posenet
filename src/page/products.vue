@@ -53,7 +53,7 @@
         </el-carousel-item>
         <el-carousel-item>
           <div class="content">
-            <p class="title">二 大 特 点</p>
+            <p class="title"></p>
             <div class="advantage">
               <img src="../assets/img/轮播插图.png" alt />
               <div class="advItem item4">
@@ -63,7 +63,7 @@
                 <p class="text">5G时代的智能体育运动数据采集机器人</p>
               </div>
               <div class="advItem item5">
-                <p class="name">智能训练 及时反馈</p>
+                <p class="name">PAD端即时反馈</p>
                 <p class="text">测试结果与分析报告</p>
               </div>
             </div>
@@ -417,7 +417,6 @@ export default {
       }
       .advItem {
         position: absolute;
-        white-space: nowrap;
         .name {
           font-size: 14px;
           color: #001962;
