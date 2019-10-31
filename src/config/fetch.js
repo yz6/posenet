@@ -1,38 +1,38 @@
-import {baseUrl} from './env'
-import {getCookie} from "../api/cookie";
+import { baseUrl } from './env'
+import { getCookie } from "../api/cookie";
 import Vue from 'vue';
-import {Message} from 'element-ui';
+import { Message } from 'element-ui';
 
 Vue.prototype.$message = Message;
 import router from '../router'
 export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
     type = type.toUpperCase();
     url = baseUrl + url;
-    
+
     if (type == 'GET' || type == 'DELETE') {
         let dataStr = ''; //数据拼接字符串
         Object.keys(data).forEach(key => {
             dataStr += key + '=' + data[key] + '&';
         })
-        
+
         if (dataStr !== '') {
             dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
             url = url + '?' + dataStr;
         }
     }
-    
+
     if (window.fetch && method == 'fetch') {
         let requestConfig = {
             credentials: 'include',
             method: type,
-             headers: {
+            headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 "X-Auth-Token": getCookie('token'),
             },
             mode: "cors",
         }
-        
+
         if (type == 'POST' || type == 'PUT') {
             Object.defineProperty(requestConfig, 'body', {
                 value: JSON.stringify(data)
@@ -49,9 +49,9 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
             if (responseJson.errorCode == 1006 || responseJson.errorCode == 401) {
                 Vue.prototype.$message.error(responseJson.message)
                 // router.push('/empty')
-                
+
             }
-            if(responseJson.errorCode){
+            if (responseJson.errorCode) {
                 Vue.prototype.$message.error(responseJson.message)
             }
             return responseJson
@@ -66,12 +66,12 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
             } else {
                 requestObj = new ActiveXObject;
             }
-            
+
             let sendData = '';
             if (type == 'POST') {
                 sendData = JSON.stringify(data);
             }
-            
+
             requestObj.open(type, url, true);
             requestObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             requestObj.send(sendData);
@@ -84,7 +84,7 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
                             obj = JSON.parse(obj);
                         }
                         resolve(obj)
-                        
+
                     } else {
                         reject(requestObj)
                     }
