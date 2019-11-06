@@ -48,7 +48,9 @@
 </template>
 
 <script>
-export default {
+    import {postForm} from "../api/getData";
+
+    export default {
   name: "postForm",
   data() {
     var checkPhone = (rule, value, callback) => {
@@ -105,7 +107,7 @@ export default {
         if (valid) {
           const res = await postForm(this.form);
           if (res.status === 200) {
-            this.$message("提交成功");
+            this.$message.success("提交成功");
             this.centerDialogVisible = false;
           }
         } else {
