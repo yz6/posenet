@@ -47,8 +47,12 @@ export default {
     };
   },
   mounted() {},
-  watch: {},
-  activated() {},
+  watch: {
+    $route: "changCurrentPath"
+  },
+  activated() {
+    this.currentPath = this.$route.path;
+  },
   created() {
     this.currentPath = this.$route.path;
   },
@@ -58,6 +62,9 @@ export default {
       console.log(item);
       this.$router.push(item.path);
       this.currentPath = item.path;
+    },
+    changCurrentPath() {
+      this.currentPath = this.$route.path;
     }
   }
 };

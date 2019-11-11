@@ -23,12 +23,13 @@ const i18n = new VueI18n({
     messages: {
         'zh': require('../static/lang/zh'),
         'en': require('../static/lang/en')
-    }})
+    }
+})
 new Vue({
-	el: '#app',
-	router,
-	store,
-    i18n:i18n,
-	template: '<App/>',
-	components: { App }
+    el: '#app',
+    router,
+    store,
+    i18n: i18n,
+    template: '<App/>',
+    components: { App }
 })

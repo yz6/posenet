@@ -6,21 +6,21 @@
           <p>智慧体测机器人</p>
           <p class="desc">开启校园体测人工智能时代</p>
         </div>
-        <img style="width: 500px;margin-top:0;" src="../assets/img/logo11@2x.png" alt />
+        <img style="margin-top:0;" src="../assets/img/logo11@2x.png" alt />
       </div>
     </div>
     <div class="top2Bg">
       <div>
-        <p>智 慧 体 测</p>
+        <p>智&ensp;慧&ensp;体&ensp;测</p>
         <p>
           颠覆性变革创新产品，实现校园体测全流程在线、全过程监控、全平台智能，
           <br />引领校园体测设备跨越式发展，开启校园体测人工智能时代。
         </p>
       </div>
     </div>
-    <div class="midContent" style="height: 495px">
+    <div class="midContent" style="height: 550px;">
       <div class="content">
-        <p class="title">九 大 核 心 功 能</p>
+        <p class="title">九&ensp;大&ensp;核&ensp;心&ensp;功&ensp;能</p>
         <ul style="overflow: hidden;zoom: 1;clear: both">
           <li class="funItem" v-for="(item,index)  in functionData" :key="index">
             <img :src="item.img" alt />
@@ -30,10 +30,10 @@
       </div>
     </div>
     <div class="midContent" style="height: 560px;background:#F8FBFF ">
-      <el-carousel height="560px" style="width:100%" arrow="always">
+      <el-carousel height="560px" style="width:100%" arrow="always" :interval="5000">
         <el-carousel-item>
           <div class="content">
-            <p class="title">三 大 优 势</p>
+            <p class="title"></p>
             <div class="advantage">
               <img src="../assets/img/111@2x.png" alt />
               <div class="advItem item1">
@@ -71,8 +71,8 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <div class="sampleContent" style="height: 480px;background:#FFFFFF;">
-      <p class="title">案&emsp;例&emsp;场&emsp;景&emsp;</p>
+    <div class="sampleContent" style="height: 550px;background:#FFFFFF;">
+      <p class="title">案&ensp;例&ensp;场&ensp;景&ensp;</p>
       <div class="content">
         <el-row :gutter="100">
           <el-col :key="item.word" :span="8" v-for="item in sampleData">
@@ -88,9 +88,9 @@
         </el-row>
       </div>
     </div>
-    <div class="sampleContent" style="height: 495px;background:#F8FBFF;">
+    <div class="sampleContent" style="height: 550px;background:#F8FBFF;">
       <div class="content">
-        <p class="title">支&emsp;持&emsp;项&emsp;目</p>
+        <p class="title">支&ensp;持&ensp;项&ensp;目</p>
         <ul style="margin-top:30px;" class="projectList">
           <li class="projectItem" v-for="(item,index)  in projectData1" :key="index">
             <img :src="item.img" alt />
@@ -105,8 +105,8 @@
         </ul>
       </div>
     </div>
-    <div class="bottomContent" style="height: 450px;background: #fff">
-      <el-carousel height="450px" style="width:100%" arrow="always">
+    <div class="bottomContent" style="height: 550px;background: #fff">
+      <el-carousel height="550px" style="width:100%" arrow="always">
         <el-carousel-item v-for="(item, index) in swiperData" :key="index">
           <div class="swiperBody">
             <div class="left">
@@ -231,11 +231,7 @@ export default {
         },
         {
           name: "体测成绩智能分析",
-          text: [
-            "测试结果自动生成",
-            "学生体质智能分析",
-            "智能化体育测试报告。"
-          ],
+          text: ["测试结果自动生成", "学生体质智能分析", "智能化体育测试报告"],
           img: require("../assets/img/lunbo2@2x.png")
         },
         {
@@ -268,14 +264,46 @@ export default {
 
 <style lang="less">
 .products {
+  .modalForm .el-dialog.el-dialog--center {
+    box-shadow: 0 0 3px 0 #f8fbff;
+  }
+  .el-carousel__indicator.el-carousel__indicator--horizontal {
+    .el-carousel__button {
+      background-color: #e2effe;
+      height: 6px;
+      border-radius: 5px;
+    }
+    &.is-active {
+      .el-carousel__button {
+        background-color: #2c8efb;
+      }
+    }
+  }
+  .el-carousel__indicator--horizontal {
+    padding: 12px 10px;
+  }
+  .content-main {
+    min-width: 900px;
+    max-width: 1200px;
+    width: 80%;
+  }
+  .topBanner {
+    height: 460px;
+  }
   .topBg {
+    img {
+      height: 70%;
+    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     .desc {
       font-size: 14px;
       margin-top: 20px;
     }
   }
   .top2Bg {
-    height: 220px;
+    height: 300px;
     display: flex;
     background: #f8fbff;
     align-items: center;
@@ -303,7 +331,7 @@ export default {
       font-weight: 600;
       color: #001962;
       font-size: 18px;
-      padding-bottom: 40px;
+      padding-bottom: 60px;
       padding-top: 65px;
     }
     background: #fff;
@@ -348,7 +376,6 @@ export default {
       }
     }
     .minCard {
-      cursor: pointer;
       box-shadow: 0px 0px 13px 0px rgba(29, 183, 243, 0.1);
       border-radius: 8px;
       text-align: center;
@@ -357,6 +384,7 @@ export default {
       height: 310px;
 
       .imgContainer {
+        background: #f8fbff;
         width: auto;
         height: 185px;
         border-radius: 8px;
@@ -380,16 +408,24 @@ export default {
     align-items: center;
     justify-content: center;
     .content {
-      width: 960px;
+      height: 100%;
+      width: 80%;
+      min-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
     }
+
     .title {
       text-align: center;
       font-family: "PingFangSC-Semibold";
       font-weight: 600;
       color: #001962;
       font-size: 18px;
-      margin-bottom: 20px;
+      margin-bottom: 50px;
       margin-top: 20px;
     }
     .funItem {
@@ -410,8 +446,10 @@ export default {
 
     .advantage {
       position: relative;
+      width: 100%;
       text-align: center;
       padding-top: 105px;
+      padding-bottom: 105px;
       img {
         width: 650px;
       }

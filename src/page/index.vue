@@ -26,7 +26,7 @@
     </div>
     <div class="swiperMain">
       <div style="padding: 0">
-        <el-carousel :interval="4000" arrow="never" height="450px">
+        <el-carousel :interval="4000" arrow="never" height="650px">
           <el-carousel-item class="swiperItem" v-for="(item, idx) in swiperData" :key="idx">
             <div class="imgBox">
               <img :src="item.img" alt />
@@ -40,8 +40,8 @@
         </el-carousel>
       </div>
     </div>
-    <div class="sampleContent" style="height: 520px;background:#FFFFFF;">
-      <p class="title">案&emsp;例&emsp;场&emsp;景&emsp;</p>
+    <div class="sampleContent" style="height: 650px;background:#FFFFFF;">
+      <p class="title">产&ensp;品&ensp;方&ensp;案&ensp;</p>
       <div class="content">
         <el-row :gutter="100">
           <el-col :key="item.word" :span="8" v-for="item in sampleData">
@@ -56,6 +56,12 @@
             </transition>
           </el-col>
         </el-row>
+      </div>
+    </div>
+    <div class="cooperation">
+      <p class="title">合&ensp;作&ensp;院&ensp;校&ensp;</p>
+      <div class="content">
+        <img v-for="(item, index) in cooperationData" :key="index" :src="item" alt />
       </div>
     </div>
     <postForm></postForm>
@@ -175,6 +181,14 @@ export default {
           desc: "智能感知运动数据多设备趣味互动",
           img: require("../assets/img/智慧步道@2x.png")
         }
+      ],
+      cooperationData: [
+        require("../assets/img/北大@2x.png"),
+        require("../assets/img/人大@2x.png"),
+        require("../assets/img/北航@2x.png"),
+        require("../assets/img/北体大@2x.png"),
+        require("../assets/img/上体@2x.png"),
+        require("../assets/img/郑体@2x.png")
       ]
     };
   },
@@ -186,6 +200,9 @@ export default {
 
 <style lang="less">
 .index {
+  .modalForm .el-dialog.el-dialog--center {
+    box-shadow: 0 0 3px 0 #f8fbff;
+  }
   background: #fff;
 
   .banner {
@@ -220,6 +237,9 @@ export default {
   .midMain {
     background: #fff;
     margin: 88px auto 125px auto;
+    width: 80%;
+    max-width: 1200px;
+    min-width: 900px;
     .minCard {
       box-shadow: 0px 0px 13px 0px rgba(29, 183, 243, 0.1);
       border-radius: 8px;
@@ -249,7 +269,7 @@ export default {
   }
   .swiperMain {
     background: #f8fbff;
-    height: 451px;
+    // height: 451px;
     .el-carousel__indicators {
       bottom: 50px;
     }
@@ -272,14 +292,14 @@ export default {
       .imgBox {
         position: relative;
         img {
-          width: 200px;
+          width: 250px;
           position: absolute;
           top: 0;
           right: 31px;
         }
         .pie {
-          width: 200px;
-          height: 200px;
+          width: 250px;
+          height: 250px;
           background: #ccf8e9;
           border-radius: 50%;
         }
@@ -305,6 +325,7 @@ export default {
     }
   }
   .sampleContent {
+    margin-bottom: 30px;
     .el-col-8 {
       &:nth-of-type(1) {
         img {
@@ -334,8 +355,8 @@ export default {
       font-weight: 600;
       color: #001962;
       font-size: 18px;
-      padding-bottom: 40px;
-      padding-top: 65px;
+      padding-bottom: 80px;
+      padding-top: 130px;
     }
     background: #fff;
     .content {
@@ -362,7 +383,6 @@ export default {
       }
     }
     .minCard {
-      cursor: pointer;
       box-shadow: 0px 0px 13px 0px rgba(29, 183, 243, 0.1);
       border-radius: 8px;
       text-align: center;
@@ -395,6 +415,33 @@ export default {
     .minCard:hover {
       transform: translate(0, -10px);
       box-shadow: 0px 5px 13px 4px rgba(29, 183, 243, 0.2);
+    }
+  }
+  .cooperation {
+    background: #f8fbff;
+    padding-bottom: 120px;
+    .title {
+      text-align: center;
+      font-family: "PingFangSC-Semibold";
+      font-weight: 600;
+      color: #001962;
+      font-size: 18px;
+      padding-bottom: 90px;
+      padding-top: 90px;
+    }
+    .content {
+      display: flex;
+
+      width: 80%;
+      margin: 0 auto;
+      max-width: 1200px;
+      min-width: 900px;
+
+      align-items: center;
+      justify-content: space-between;
+      img {
+        width: 12%;
+      }
     }
   }
 }

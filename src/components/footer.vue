@@ -14,7 +14,7 @@
         <div>
           <p class="itemTitle">产品介绍</p>
           <router-link :to="'/products'">
-            <p class="normal link">智慧体测</p>
+            <p class="normal link">智慧体测机器人</p>
           </router-link>
           <!--<p class="normal">智慧步道</p>-->
           <!--<p class="normal">智慧体育</p>-->

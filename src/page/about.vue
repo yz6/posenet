@@ -4,7 +4,7 @@
       <div class="topBanner">
         <div class="content-main topBg">
           <p>打造“云+端 体育AI平台化服务”</p>
-          <img style="width: 280px" src="../assets/img/编组 13@2x.png" alt />
+          <img style="width: 360px" src="../assets/img/编组 13@2x.png" alt />
         </div>
       </div>
     </div>
@@ -51,8 +51,8 @@
               </div>
             </div>
             <div class="whyJoin">
-              <el-row gutter="90">
-                <el-col class="joinItem" :key="item" :span="8" v-for="(item,ind) in whyJoin">
+              <el-row :gutter="90">
+                <el-col class="joinItem" :key="ind" :span="8" v-for="(item,ind) in whyJoin">
                   <div style="position: relative">
                     <span class="indIcon">0{{ind+1}}.</span>
                     <p class="name">{{item.name}}</p>
@@ -275,6 +275,9 @@ export default {
 
 <style lang="less">
 .about {
+  .topBanner {
+    height: 460px;
+  }
   .title {
     color: #001962;
     font-size: 20px;
@@ -523,7 +526,7 @@ export default {
     }
   }
   .el-tabs__nav-scroll {
-    padding-top: 5px;
+    padding-top: 30px;
     display: flex;
     justify-content: center;
     background: #f8fbff;

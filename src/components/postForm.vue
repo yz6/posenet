@@ -41,16 +41,16 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
+        <el-button type="primary" @click="onSubmit('form')" :loading="loading">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-    import {postForm} from "../api/getData";
+import { postForm } from "../api/getData";
 
-    export default {
+export default {
   name: "postForm",
   data() {
     var checkPhone = (rule, value, callback) => {
@@ -74,6 +74,7 @@
         email: "",
         content: ""
       },
+      loading: false,
       rules: {
         companyName: [
           { required: true, message: "请输入公司名称", trigger: "blur" }
@@ -105,14 +106,17 @@
     onSubmit(formName) {
       this.$refs[formName].validate(async (valid, values) => {
         if (valid) {
+          this.loading = true;
           const res = await postForm(this.form);
           if (res.status === 200) {
             this.$message.success("提交成功");
+            this.loading = false;
             this.centerDialogVisible = false;
           }
         } else {
           console.log("error submit!!");
-          this.$message("提交失败！");
+          this.loading = false;
+          this.$message("提交失败！请检查示所填信息是否正确无误");
           this.centerDialogVisible = false;
           return false;
         }
@@ -149,6 +153,7 @@
 }
 .bottomBox {
   height: 200px;
+  margin-top: 80px;
   background: #fff;
   display: flex;
   justify-content: center;
