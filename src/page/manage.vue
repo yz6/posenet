@@ -17,7 +17,7 @@
 
                </canvas>
                <canvas id="stage"  style="position: absolute;left: 0;top: 0;" :width="videoWidth" :height="videoHeight" ></canvas>
-               <canvas id="score"  width="50" height="50" style="position: absolute;left: 0;top: 0" v-show="num==0"></canvas>
+               <canvas id="score"  width="80" height="80" style="position: absolute;left: 0;top: 0" v-show="num==0"></canvas>
            </div>
             <p class="resetBtn" @click="resetStart" v-if="num==0">停止</p>
         </div>
@@ -333,7 +333,7 @@
 
 
                         this.score++
-                        scoreCtx.clearRect(0,0,50,50)
+                        scoreCtx.clearRect(0,0,80,80)
                         drawStartText(scoreCtx,this.score,40,40,'#3a8ee6','60px bold 黑体')
 
                     }
@@ -343,7 +343,7 @@
             resetStart(){
                 let touchCtx = document.getElementById('stage').getContext('2d');
                 const scoreCtx = document.getElementById('score').getContext('2d');
-                scoreCtx.clearRect(0,0,50,50)
+                scoreCtx.clearRect(0,0,80,80)
                 this.num=3
                 this.score=0
               this.gameStart=false
