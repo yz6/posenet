@@ -4,36 +4,15 @@ import store from '../store/'
 Vue.use(Router)
 
 const manage = r => require.ensure([], () => r(require('@/page/manage')), 'index');
-const index = r => require.ensure([], () => r(require('@/page/index')), 'index');
-const products = r => require.ensure([], () => r(require('@/page/products')), 'products');
-const about = r => require.ensure([], () => r(require('@/page/about')), 'about');
+
+
 
 const routes = [
     {
         path: '/',
         component: manage,
         meta: ['首页'],
-        redirect: '/index',
-        children: [
-            {
-                path: '/index',
-                meta: ['首页'],
-                name: 'index',
-                component: index,
-            },
-            {
-                path: '/products',
-                meta: ['智慧机器人'],
-                name: 'products',
-                component: products,
-            },
-            {
-                path: '/about',
-                name: 'about',
-                meta: ['关于我们'],
-                component: about,
-            }
-        ]
+        children: []
     }
 ]
 
