@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%;height: 100%">
+    <div style="width: 100%;height: 100%;background:#333">
         <div id="info" style='display:none'>
         </div>
         <div id="loading" style='display:flex'>
@@ -17,9 +17,9 @@
 
                </canvas>
                <canvas id="stage"  style="position: absolute;left: 0;top: 0;" :width="videoWidth" :height="videoHeight" ></canvas>
-               <canvas id="score"  width="50" height="50" style="position: absolute;left: 0;top: 0" v-show="gameStart"></canvas>
+               <canvas id="score"  width="50" height="50" style="position: absolute;left: 0;top: 0" v-show="num==0"></canvas>
            </div>
-
+            <p class="resetBtn" @click="resetStart" v-if="num==0">停止</p>
         </div>
 
     </div>
@@ -109,7 +109,7 @@
                 navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         // kick off the demo
             this.bindPage();
-            radiusRect(touchCtx,startBtn)
+
             let that = this
 
 
@@ -121,11 +121,11 @@
 
         watch: {
             num(v){
-                if(v==0){
+                if(v<=0){
                     const scoreCtx = document.getElementById('score').getContext('2d');
                     drawStartText(scoreCtx,+this.score,40,20,'RED','30px bold 黑体')
                     let that = this
-                    setInterval(function () {
+                    this.gameInt = setInterval(function () {
                         that.setRandomTouch()
                     },3000)
                 }
@@ -175,7 +175,7 @@
                 let that = this
                 const canvas = document.getElementById('output');
                 const ctx = canvas.getContext('2d');
-                const touchCtx = document.getElementById('stage').getContext('2d');
+
                 // since images are being fed from a webcam, we want to feed in the
                 // original image and then just flip the keypoints' x coordinates. If instead
                 // we flip the image, then correcting left-right keypoint pairs requires a
@@ -305,13 +305,14 @@
                 this.int = setInterval(this.clock,1000)
             },
             clock(){
-
                 let that = this
                 console.log(this.num)
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 touchCtx.clearRect(0,0,videoWidth,videoWidth)
-                drawStartText(touchCtx,this.num==0?'开始':this.num,videoWidth/2,videoWidth/2,'RED','80px bold 黑体')
+                drawStartText(touchCtx,this.num,videoWidth/2,videoWidth/2,'RED','80px bold 黑体')
                 this.num>0 ? this.num-=1 : clearInterval(this.int);
+
+
 
             },
 
@@ -340,8 +341,21 @@
                     }
                 })
             },
+            //结束
+            resetStart(){
+                let touchCtx = document.getElementById('stage').getContext('2d');
+                const scoreCtx = document.getElementById('score').getContext('2d');
+                scoreCtx.clearRect(0,0,50,50)
+                this.num=3
+                this.score=0
+              this.gameStart=false
+                touchCtx.clearRect(0, 0, videoWidth, videoHeight)
+              radiusRect(touchCtx,startBtn)
+              clearInterval(this.gameInt)
+            },
             //页面绑定
             async  bindPage() {
+                const touchCtx = document.getElementById('stage').getContext('2d');
                 toggleLoadingUI(true);
                 const net = await posenet.load({
                     architecture: state.options.architecture,
@@ -356,12 +370,11 @@
                     video = await this.loadVideo();
                 } catch (e) {
                     let info = document.getElementById('info');
-                    info.textContent = 'this browser does not support video capture,' +
-                        'or this device does not have a camera';
+                    info.textContent = '此浏览器不支持视频录像,或设备没有摄像头';
                     info.style.display = 'block';
                     throw e;
                 }
-
+                radiusRect(touchCtx,startBtn)
                 this.setupGui([], net);
                 this.detectPoseInRealTime(video, net);
 
@@ -458,5 +471,15 @@
         text-align: center;
         margin-top: 10px;
     }
-
+    .resetBtn{
+        color: #fff;
+        font-size: 18px;
+        width: 100px;
+        margin: 0 auto;
+        padding: 5px 10px;
+        border: 1px solid #fff;
+        border-radius: 5px;
+        text-align: center;
+        margin-top: 20px;
+    }
 </style>
