@@ -41,7 +41,7 @@
     } from '../util/posenet_util';
 
     const videoWidth = document.body.clientWidth>700?700: document.body.clientWidth
-    const videoHeight = document.body.clientWidth>700?700: document.body.clientWidth
+    const videoHeight = document.body.clientHeight>700?700: document.body.clientHeight
     const defaultQuantBytes = 2;
     const defaultMobileNetMultiplier = 0.75;
     const defaultMobileNetStride = 16;
