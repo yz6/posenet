@@ -41,7 +41,7 @@
     } from '../util/posenet_util';
 
     const videoWidth = document.body.clientWidth>700?700: document.body.clientWidth
-    const videoHeight = document.body.clientHeight>700?700: document.body.clientHeight
+    const videoHeight = document.body.clientHeight>700?700-100: document.body.clientHeight-100
     const defaultQuantBytes = 2;
     const defaultMobileNetMultiplier = 0.75;
     const defaultMobileNetStride = 16;
@@ -80,10 +80,10 @@
         interval:3000
     }
     const startBtn={
-        x:videoWidth-(videoWidth/10+90),
-        y:30,
-        w:90,
-        h:40,
+        x:videoWidth-(videoWidth/10+150),
+        y:50,
+        w:150,
+        h:60,
         radius:10,
         text:'触摸开始',
         color:'#f00'
@@ -122,8 +122,6 @@
         watch: {
             num(v){
                 if(v<=0){
-                    const scoreCtx = document.getElementById('score').getContext('2d');
-                    drawStartText(scoreCtx,+this.score,40,20,'RED','30px bold 黑体')
                     let that = this
                     this.gameInt = setInterval(function () {
                         that.setRandomTouch()
@@ -329,14 +327,14 @@
                         && v.part.indexOf('Wrist')!=-1
                     ){
                         touchCtx.clearRect(0, 0, videoWidth, videoHeight)
-                        drawStartText(touchCtx,'+1',touchPoint.x+touchPoint.r/2,touchPoint.y/2+touchPoint.r,'RED','30px bold 黑体')
+                        drawStartText(touchCtx,'+1',touchPoint.x+touchPoint.r/2,touchPoint.y/2+touchPoint.r,'#3a8ee6','60px bold 黑体')
                         touchPoint.x = ''
                         touchPoint.y = ''
 
 
                         this.score++
                         scoreCtx.clearRect(0,0,50,50)
-                        drawStartText(scoreCtx,this.score,20,20,'RED','40px bold 黑体')
+                        drawStartText(scoreCtx,this.score,40,40,'#3a8ee6','60px bold 黑体')
 
                     }
                 })
@@ -465,12 +463,6 @@
     .spinner-text {
         float: left;
     }
-    .score{
-        color: #3a8ee6;
-        font-size: 20px;
-        text-align: center;
-        margin-top: 10px;
-    }
     .resetBtn{
         color: #fff;
         font-size: 18px;
@@ -481,5 +473,6 @@
         border-radius: 5px;
         text-align: center;
         margin-top: 20px;
+
     }
 </style>

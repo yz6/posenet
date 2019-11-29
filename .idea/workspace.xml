@@ -440,14 +440,14 @@
         <counts>
           <entry key="html" value="47" />
           <entry key="js" value="433" />
-          <entry key="vue" value="4659" />
+          <entry key="vue" value="4721" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="47" />
           <entry key="JavaScript" value="433" />
-          <entry key="Vue.js" value="4659" />
+          <entry key="Vue.js" value="4721" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -483,8 +483,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="43" column="50" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
+            <state relative-caret-position="179">
+              <caret line="334" column="36" lean-forward="true" selection-start-line="334" selection-start-column="36" selection-end-line="334" selection-end-column="36" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -501,8 +501,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="41" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="41" />
+            <state relative-caret-position="44">
+              <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
               </folding>
@@ -573,8 +573,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>drawI</find>
-      <find>draw</find>
       <find>canv</find>
       <find>detectPoseInRealTime</find>
       <find>this.setRandomTouch()</find>
@@ -596,13 +594,15 @@
       <find>stage</find>
       <find>#output</find>
       <find>videoWidth</find>
-      <find>score</find>
       <find>canvas</find>
       <find>触摸开始</find>
       <find>num</find>
       <find>touchCtx</find>
       <find>bro</find>
       <find>main</find>
+      <find>score</find>
+      <find>drawStartText</find>
+      <find>scoreCtx</find>
     </findStrings>
     <replaceStrings>
       <replace>岗位发布人</replace>
@@ -1035,12 +1035,12 @@
       <workItem from="1574042402167" duration="1332000" />
       <workItem from="1574743245119" duration="98000" />
       <workItem from="1574743372795" duration="25069000" />
-      <workItem from="1574992694527" duration="13152000" />
+      <workItem from="1574992694527" duration="13752000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2979608000" />
+    <option name="totallyTimeSpent" value="2980208000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1068,7 +1068,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.08615819" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.021186441" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003524" side_tool="true" weight="0.08469945" />
       <window_info anchor="bottom" id="查找" order="11" sideWeight="0.49964765" weight="0.32909605" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
@@ -1348,8 +1348,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="41" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="41" />
+        <state relative-caret-position="44">
+          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
           <folding>
             <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
@@ -1358,8 +1358,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="43" column="50" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
+        <state relative-caret-position="179">
+          <caret line="334" column="36" lean-forward="true" selection-start-line="334" selection-start-column="36" selection-end-line="334" selection-end-column="36" />
           <folding>
             <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
