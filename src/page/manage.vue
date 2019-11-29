@@ -16,7 +16,7 @@
                <canvas id="output" >
 
                </canvas>
-               <canvas id="stage"  style="position: absolute;left: 0;top: 0;" :width="videoWidth" :height="videoWidth" ></canvas>
+               <canvas id="stage"  style="position: absolute;left: 0;top: 0;" :width="videoWidth" :height="videoHeight" ></canvas>
                <canvas id="score"  width="50" height="50" style="position: absolute;left: 0;top: 0" v-show="gameStart"></canvas>
            </div>
 
@@ -94,6 +94,7 @@
             return {
                 ctx: Object,
                 videoWidth : videoWidth,
+                videoHeight:videoHeight,
                 touchImg:require('../assets/篮球.png'),
                 score:0,
                 gameStart:false,
@@ -122,7 +123,7 @@
             num(v){
                 if(v==0){
                     const scoreCtx = document.getElementById('score').getContext('2d');
-                    drawStartText(scoreCtx,+this.score,20,20,'RED','30px bold 黑体')
+                    drawStartText(scoreCtx,+this.score,40,20,'RED','30px bold 黑体')
                     let that = this
                     setInterval(function () {
                         that.setRandomTouch()
@@ -250,11 +251,11 @@
                         // console.log(keypoints)
                         if (score >= minPoseConfidence) {
                             // if (state.options.showPoints) {
-                            //     drawKeypoints(keypoints, minPartConfidence, ctx);
+                                drawKeypoints(keypoints, minPartConfidence, ctx);
                             //
                             // }
                             // if (state.options.showSkeleton) {
-                            //     drawSkeleton(keypoints, minPartConfidence, ctx);
+                                drawSkeleton(keypoints, minPartConfidence, ctx);
                             // }
                             // if (state.options.showBoundingBox) {
                             //     drawBoundingBox(keypoints, ctx);
@@ -326,9 +327,12 @@
                         (v.position.y<=touchPoint.y+touchPoint.r&&v.position.y>touchPoint.y)
                         && v.part.indexOf('Wrist')!=-1
                     ){
+                        touchCtx.clearRect(0, 0, videoWidth, videoHeight)
+                        drawStartText(touchCtx,'+1',touchPoint.x+touchPoint.r/2,touchPoint.y/2+touchPoint.r,'RED','30px bold 黑体')
                         touchPoint.x = ''
                         touchPoint.y = ''
-                        touchCtx.clearRect(0, 0, videoWidth, videoHeight)
+
+
                         this.score++
                         scoreCtx.clearRect(0,0,50,50)
                         drawStartText(scoreCtx,this.score,20,20,'RED','40px bold 黑体')
@@ -366,6 +370,7 @@
                 this.ctx.clearRect(0,0,videoWidth,videoWidth)
                 touchPoint.x = randomNum(0,videoWidth-touchPoint.r)
                 touchPoint.y = randomNum(0,videoWidth-touchPoint.r)
+
                 drawTouchImage(this.ctx,touchPoint.x , touchPoint.y,touchPoint.r,this.touchImg)
             },
         },

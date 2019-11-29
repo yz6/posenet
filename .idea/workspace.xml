@@ -440,14 +440,14 @@
         <counts>
           <entry key="html" value="33" />
           <entry key="js" value="424" />
-          <entry key="vue" value="4214" />
+          <entry key="vue" value="4280" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="33" />
           <entry key="JavaScript" value="424" />
-          <entry key="Vue.js" value="4214" />
+          <entry key="Vue.js" value="4280" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -480,11 +480,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="257" column="32" selection-start-line="257" selection-start-column="32" selection-end-line="257" selection-end-column="32" />
+            <state relative-caret-position="242">
+              <caret line="11" column="46" lean-forward="true" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -503,11 +503,11 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+            <state relative-caret-position="198">
+              <caret line="9" column="9" lean-forward="true" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -574,9 +574,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>@tensorflow-models/posenet</find>
-      <find>export</find>
-      <find>drawPoints</find>
       <find>setupCamera</find>
       <find>singlePose</find>
       <find>BoundingBox</find>
@@ -604,6 +601,9 @@
       <find>开始</find>
       <find>stage</find>
       <find>#output</find>
+      <find>videoWidth</find>
+      <find>score</find>
+      <find>canvas</find>
     </findStrings>
     <replaceStrings>
       <replace>岗位发布人</replace>
@@ -669,8 +669,8 @@
         <option value="$PROJECT_DIR$/src/router/index.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/util/posenet_util.js" />
-        <option value="$PROJECT_DIR$/src/page/manage.vue" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/page/manage.vue" />
       </list>
     </option>
   </component>
@@ -1036,12 +1036,12 @@
       <workItem from="1574042402167" duration="1332000" />
       <workItem from="1574743245119" duration="98000" />
       <workItem from="1574743372795" duration="25069000" />
-      <workItem from="1574992694527" duration="8653000" />
+      <workItem from="1574992694527" duration="10663000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2975109000" />
+    <option name="totallyTimeSpent" value="2977119000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1056,7 +1056,7 @@
     <frame x="4" y="24" width="1433" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49858758" visible="true" weight="0.2407932" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49858758" visible="true" weight="0.14093484" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" sideWeight="0.50141245" side_tool="true" weight="0.13389711" />
@@ -1069,7 +1069,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.23870057" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.01977401" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003524" side_tool="true" weight="0.08469945" />
       <window_info anchor="bottom" id="查找" order="11" sideWeight="0.49964765" weight="0.32909605" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
@@ -1344,10 +1344,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.babelrc">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="9" column="9" lean-forward="true" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="257" column="32" selection-start-line="257" selection-start-column="32" selection-end-line="257" selection-end-column="32" />
+        <state relative-caret-position="242">
+          <caret line="11" column="46" lean-forward="true" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
           <folding>
             <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1357,16 +1367,6 @@
             <element signature="n#style#0;n#canvas#2;n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="e#932#986#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.babelrc">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
         </state>
       </provider>
     </entry>
