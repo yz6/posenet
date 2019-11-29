@@ -440,14 +440,14 @@
         <counts>
           <entry key="html" value="47" />
           <entry key="js" value="433" />
-          <entry key="vue" value="4737" />
+          <entry key="vue" value="4738" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="47" />
           <entry key="JavaScript" value="433" />
-          <entry key="Vue.js" value="4737" />
+          <entry key="Vue.js" value="4738" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -483,8 +483,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="346" column="26" lean-forward="true" selection-start-line="346" selection-start-column="26" selection-end-line="346" selection-end-column="26" />
+            <state relative-caret-position="167">
+              <caret line="87" column="16" selection-start-line="87" selection-start-column="16" selection-end-line="87" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1035,12 +1035,12 @@
       <workItem from="1574042402167" duration="1332000" />
       <workItem from="1574743245119" duration="98000" />
       <workItem from="1574743372795" duration="25069000" />
-      <workItem from="1574992694527" duration="13955000" />
+      <workItem from="1574992694527" duration="14084000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2980411000" />
+    <option name="totallyTimeSpent" value="2980540000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1358,8 +1358,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="346" column="26" lean-forward="true" selection-start-line="346" selection-start-column="26" selection-end-line="346" selection-end-column="26" />
+        <state relative-caret-position="167">
+          <caret line="87" column="16" selection-start-line="87" selection-start-column="16" selection-end-line="87" selection-end-column="16" />
           <folding>
             <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />

@@ -85,7 +85,7 @@
         w:150,
         h:60,
         radius:10,
-        text:'触摸开始',
+        text:'开 始',
         color:'#f00'
     }
 
