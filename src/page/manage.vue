@@ -47,7 +47,7 @@
     const defaultMobileNetStride = 16;
     const defaultMobileNetInputResolution = {width:videoWidth,height:videoHeight};
     const state = {
-        algorithm: 'single-pose',
+        algorithm: 'multi-pose',
         options: {
             architecture: 'MobileNetV1',
             outputStride: defaultMobileNetStride,
