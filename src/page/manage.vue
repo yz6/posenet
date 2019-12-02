@@ -19,8 +19,8 @@
                     display: none;
         ">
             </video>
-            <div style="position: relative">
-                <canvas id="output">
+            <div style="position: relative" >
+                <canvas id="output" v-show="pageShow">
 
                 </canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
@@ -28,10 +28,9 @@
                 <canvas id="score" width="80" height="80" style="position: absolute;left: 0;top: 0"
                         v-show="num==0"></canvas>
             </div>
-
-            <p class="resetBtn" @click="resetStart" v-if="num==0">停止</p>
-            <div class="videoConfig">
-                <yd-button size="large" @click.native="setConfigDia" type="primary">参数设置</yd-button>
+            <yd-button @click.native="resetStart"  size="large" type="hollow"  v-if="num==0">结 束</yd-button>
+            <div class="videoConfig" v-else>
+                <yd-button size="large" @click.native="setConfigDia"  bgcolor="aqua">参数设置</yd-button>
 
             </div>
             <yd-popup v-model="configPop" position="center" width="90%" >
@@ -165,7 +164,8 @@
                         nmsRadius: 30.0,
                     },
                     net: null,
-                }
+                },
+                pageShow:false
             }
         },
         async mounted() {
@@ -431,6 +431,7 @@
             },
             //页面绑定
             async bindPage() {
+                this.pageShow = false
                 let state = this.state
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 toggleLoadingUI(true);
@@ -451,6 +452,7 @@
                     info.style.display = 'block';
                     throw e;
                 }
+                this.pageShow = true
                 radiusRect(touchCtx, startBtn)
                 this.setupGui([], net);
                 this.detectPoseInRealTime(video, net);
@@ -553,7 +555,7 @@
         border: 1px solid #fff;
         border-radius: 5px;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 5px;
 
     }
 

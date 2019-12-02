@@ -96,7 +96,7 @@ export function radiusRect(ctx,obj) {
     ctx.closePath();
     ctx.fillStyle=obj.color;
     ctx.fill();
-    drawStartText(ctx,obj.text,obj.x+obj.w/2,obj.y+obj.h/2,'#fff')
+    drawStartText(ctx,obj.text,obj.x+obj.w/2,obj.y+obj.h/2,'#000')
     ctx.stroke();
  
 }
