@@ -80,10 +80,10 @@
         interval:3000
     }
     const startBtn={
-        x:videoWidth-(videoWidth/10+100),
+        x:videoWidth-(videoWidth/10+120),
         y:40,
-        w:100,
-        h:50,
+        w:120,
+        h:60,
         radius:10,
         text:'开 始',
         color:'aqua'
