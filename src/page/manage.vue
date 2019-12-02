@@ -143,9 +143,12 @@
                 const stream = await navigator.mediaDevices.getUserMedia({
                     'audio': false,
                     'video': {
-                        facingMode: 'user',
+                        facingMode: 'environment',
                         width: mobile ? undefined : videoWidth,
                         height: mobile ? undefined : videoHeight,
+                        // 'optional': [{
+                        //     'sourceId':1 //0为前置摄像头，1为后置
+                        // }]
                     },
                 });
                 video.srcObject = stream;
