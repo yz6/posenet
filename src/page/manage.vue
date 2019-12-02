@@ -4,22 +4,76 @@
         </div>
         <div id="loading" style='display:flex'>
             <div class="spinner-text">
-               加载PoseNet模型...
+                加载PoseNet模型...
             </div>
             <div class="sk-spinner sk-spinner-pulse"></div>
         </div>
         <div id='main'>
-            <video id="video" playsinline style="-moz-transform:scaleX(-1);-o-transform: scaleX(-1);-webkit-transform: scaleX(-1);transform: scaleX(-1);display: none;
+            <video id="video" playsinline
+                   style="
+                    transform: scaleX(-1);
+                    -ms-transform: translateX(-1);
+                   -moz-transform:scaleX(-1);
+                   -o-transform: scaleX(-1);
+                   -webkit-transform: scaleX(-1);
+                    display: none;
         ">
             </video>
-           <div style="position: relative">
-               <canvas id="output" >
+            <div style="position: relative">
+                <canvas id="output">
 
-               </canvas>
-               <canvas id="stage"  style="position: absolute;left: 0;top: 0;" :width="videoWidth" :height="videoHeight" ></canvas>
-               <canvas id="score"  width="80" height="80" style="position: absolute;left: 0;top: 0" v-show="num==0"></canvas>
-           </div>
+                </canvas>
+                <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
+                        :height="videoHeight"></canvas>
+                <canvas id="score" width="80" height="80" style="position: absolute;left: 0;top: 0"
+                        v-show="num==0"></canvas>
+            </div>
+
             <p class="resetBtn" @click="resetStart" v-if="num==0">停止</p>
+            <div class="videoConfig">
+                <yd-button size="large" @click.native="setConfigDia" type="primary">参数设置</yd-button>
+
+            </div>
+            <yd-popup v-model="configPop" position="center" width="90%" >
+                <div style="background-color:#fff;" class="configBody">
+                    <div class="configItem">
+                        <span class="itemLable">摄像头: </span>  <yd-radio-group v-model="facingMode">
+
+                        <yd-radio v-for="item in facingModeOpt" :key="item.value"
+                                  :val="item.value">{{item.name}}</yd-radio>
+                    </yd-radio-group>
+                    </div>
+                    <div class="configItem">
+                        <span class="itemLable">outputStride: </span>  <yd-radio-group v-model="state.options.outputStride">
+
+                        <yd-radio v-for="item in state.options.outputStrideOpt" :key="item"
+                                  :val="item"></yd-radio>
+                    </yd-radio-group>
+                    </div>
+                   <div class="configItem">
+                       <span class="itemLable">inputResolution: </span> <yd-radio-group v-model="state.options.inputResolution">
+                           <yd-radio v-for="item in state.options.inputResolutionOpt" :key="item"
+                                     :val="item"></yd-radio>
+                       </yd-radio-group>
+                   </div>
+                    <div class="configItem">
+                        <span class="itemLable">multiplier: </span> <yd-radio-group v-model="state.options.multiplier">
+                        <yd-radio v-for="item in state.options.multiplierOpt" :key="item"
+                                  :val="item"></yd-radio>
+                    </yd-radio-group>
+                    </div>
+                    <div class="configItem">
+                        <span class="itemLable">quantBytes: </span> <yd-radio-group v-model="state.options.quantBytes">
+                        <yd-radio v-for="item in state.options.quantBytesOpt" :key="item"
+                                  :val="item"></yd-radio>
+                    </yd-radio-group>
+                    </div>
+                    <p style="text-align: center;">
+                        <yd-button @click.native="changeConfig">确定</yd-button>
+                    </p>
+
+                </div>
+            </yd-popup>
         </div>
 
     </div>
@@ -27,10 +81,7 @@
 
 <script>
     import * as posenet from '@tensorflow-models/posenet';
-
     import {
-        drawBoundingBox,
-        drawKeypoints,
         drawSkeleton,
         isMobile,
         toggleLoadingUI,
@@ -40,78 +91,92 @@
         radiusRect
     } from '../util/posenet_util';
 
-    const videoWidth = document.body.clientWidth>700?700: document.body.clientWidth
-    const videoHeight = document.body.clientHeight>700?700-100: document.body.clientHeight-100
+    const videoWidth = document.body.clientWidth
+    const videoHeight = document.body.clientHeight - 50
     const defaultQuantBytes = 2;
     const defaultMobileNetMultiplier = 0.75;
     const defaultMobileNetStride = 16;
-    const defaultMobileNetInputResolution = {width:videoWidth,height:videoHeight};
-    const state = {
-        algorithm: 'multi-pose',
-        options: {
-            architecture: 'MobileNetV1',
-            outputStride: defaultMobileNetStride,
-            // inputResolution: defaultMobileNetInputResolution,
-            multiplier: defaultMobileNetMultiplier,
-            quantBytes: defaultQuantBytes,
-            showVideo: true,
-            showSkeleton: true,
-            showPoints: true,
-            showBoundingBox: false,
-        },
-        singlePoseDetection: {
-            minPoseConfidence: 0.1,
-            minPartConfidence: 0.5,
-        },
-        multiPoseDetection: {
-            maxPoseDetections: 5,
-            minPoseConfidence: 0.15,
-            minPartConfidence: 0.1,
-            nmsRadius: 30.0,
-        },
-        net: null,
+    const defaultMobileNetInputResolution = 200;
 
-    };
-
-    const touchPoint={
-        x:'',
-        y:'',
-        r:videoWidth/5,
-        interval:3000
+    const touchPoint = {
+        x: '',
+        y: '',
+        r: videoWidth / 5,
+        interval: 3000
     }
-    const startBtn={
-        x:videoWidth-(videoWidth/10+120),
-        y:40,
-        w:120,
-        h:60,
-        radius:10,
-        text:'开 始',
-        color:'aqua'
+    const startBtn = {
+        x: videoWidth - (videoWidth / 10 + 120),
+        y: 40,
+        w: 120,
+        h: 60,
+        radius: 10,
+        text: '开 始',
+        color: 'aqua'
     }
 
     export default {
         data() {
             return {
                 ctx: Object,
-                videoWidth : videoWidth,
-                videoHeight:videoHeight,
-                touchImg:require('../assets/篮球.png'),
-                score:0,
-                gameStart:false,
-                num:3,
+                videoWidth: videoWidth,
+                videoHeight: videoHeight,
+                touchImg: require('../assets/篮球.png'),
+                score: 0,
+                gameStart: false,
+                num: 3,
+                configPop: false,
+                facingMode:'user',
+                facingModeOpt:[
+                    {
+                        name:'前置',
+                        value:'user'
+                    },
+                    {
+                        name:'后置',
+                        value:'environment'
+                    }
+                ],
+                state: {
+                    algorithm: 'multi-pose',
 
+                    options: {
+                        architecture: 'MobileNetV1',
+                        outputStride: defaultMobileNetStride,
+                        outputStrideOpt: [8, 16],
+                        inputResolution: defaultMobileNetInputResolution,
+                        inputResolutionOpt: [200, 400, 600, 800],
+                        multiplier: defaultMobileNetMultiplier,
+                        multiplierOpt: [0.5,0.75,1.01, 1.0],
+                        quantBytes: defaultQuantBytes,
+                        quantBytesOpt: [1, 2, 4],
+                        showVideo: true,
+                        showSkeleton: true,
+                        showPoints: true,
+                        showBoundingBox: false,
+                    },
+                    singlePoseDetection: {
+                        minPoseConfidence: 0.1,
+                        minPartConfidence: 0.5,
+                    },
+                    multiPoseDetection: {
+                        maxPoseDetections: 5,
+                        minPoseConfidence: 0.15,
+                        minPartConfidence: 0.1,
+                        nmsRadius: 30.0,
+                    },
+                    net: null,
+                }
             }
         },
         async mounted() {
-           let touchCtx = document.getElementById('stage').getContext('2d');
-           this.ctx = document.getElementById('stage').getContext('2d');
+            let touchCtx = document.getElementById('stage').getContext('2d');
+            this.ctx = document.getElementById('stage').getContext('2d');
             navigator.getUserMedia = navigator.getUserMedia ||
                 navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-        // kick off the demo
+            // kick off the demo
             this.bindPage();
 
             let that = this
-
 
 
         },
@@ -120,17 +185,18 @@
         },
 
         watch: {
-            num(v){
-                if(v<=0){
+            num(v) {
+                if (v <= 0) {
                     let that = this
                     this.gameInt = setInterval(function () {
                         that.setRandomTouch()
-                    },3000)
+                    }, 3000)
                 }
             }
         },
         methods: {
-            async  setupCamera() {
+            async setupCamera() {
+                let that = this
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                     throw new Error(
                         'Browser API navigator.mediaDevices.getUserMedia not available');
@@ -143,7 +209,7 @@
                 const stream = await navigator.mediaDevices.getUserMedia({
                     'audio': false,
                     'video': {
-                        facingMode: 'environment',
+                        facingMode: that.facingMode,
                         width: mobile ? undefined : videoWidth,
                         height: mobile ? undefined : videoHeight,
                         // 'optional': [{
@@ -162,18 +228,18 @@
             async loadVideo() {
                 const video = await this.setupCamera();
                 video.play();
-
                 return video;
             },
             setupGui(cameras, net) {
-                state.net = net;
+                this.state.net = net;
                 if (cameras.length > 0) {
-                    state.camera = cameras[0].deviceId;
+                    this.state.camera = cameras[0].deviceId;
                 }
             },
 
             detectPoseInRealTime(video, net) {
                 let that = this
+                let state = this.state
                 const canvas = document.getElementById('output');
                 const ctx = canvas.getContext('2d');
 
@@ -182,9 +248,10 @@
                 // we flip the image, then correcting left-right keypoint pairs requires a
                 // permutation on all the keypoints.
                 const flipPoseHorizontal = true;
+                const v = document.getElementById('video');
 
-                canvas.width = videoWidth;
-                canvas.height = videoHeight;
+                canvas.width = v.width;
+                canvas.height = v.height;
 
                 async function poseDetectionFrame() {
                     if (state.changeToArchitecture) {
@@ -256,17 +323,17 @@
                             //
                             // }
                             // if (state.options.showSkeleton) {
-                                drawSkeleton(keypoints, minPartConfidence, ctx);
+                            drawSkeleton(keypoints, minPartConfidence, ctx);
                             // }
                             // if (state.options.showBoundingBox) {
                             //     drawBoundingBox(keypoints, ctx);
                             // }
-                            if(that.gameStart){
-                                if(that.num<=0){
+                            if (that.gameStart) {
+                                if (that.num <= 0) {
 
                                     that.touchPoint(keypoints)
                                 }
-                            }else{
+                            } else {
                                 that.handelStart(keypoints)
                             }
 
@@ -275,23 +342,24 @@
                     });
                     window.requestAnimationFrame(poseDetectionFrame);
                 }
+
                 poseDetectionFrame();
             },
             //开始
-            handelStart(keypoints){
+            handelStart(keypoints) {
                 const touchCtx = document.getElementById('stage').getContext('2d');
-                for (let i = 0; i <keypoints.length ; i++) {
-                    if(
-                        (keypoints[i].position.x<=startBtn.x+startBtn.w&&keypoints[i].position.x>startBtn.x)
+                for (let i = 0; i < keypoints.length; i++) {
+                    if (
+                        (keypoints[i].position.x <= startBtn.x + startBtn.w && keypoints[i].position.x > startBtn.x)
                         &&
-                        (keypoints[i].position.y<=startBtn.y+startBtn.h&&keypoints[i].position.y>startBtn.y)
-                        && keypoints[i].part.indexOf('Wrist')!=-1
-                    ){
+                        (keypoints[i].position.y <= startBtn.y + startBtn.h && keypoints[i].position.y > startBtn.y)
+                        && keypoints[i].part.indexOf('Wrist') != -1
+                    ) {
                         this.gameStart = true
                         this.startTimeInter()
                         break;
 
-                    }else{
+                    } else {
 
                     }
                 }
@@ -299,63 +367,71 @@
 
             },
             //开始3s
-            startTimeInter(){
+            startTimeInter() {
                 const touchCtx = document.getElementById('stage').getContext('2d');
-
-                touchCtx.clearRect(0,0,videoWidth,videoWidth)
-                this.int = setInterval(this.clock,1000)
+                touchCtx.clearRect(0, 0, videoWidth, videoWidth)
+                this.int = setInterval(this.clock, 1000)
             },
-            clock(){
+            clock() {
                 let that = this
                 console.log(this.num)
                 const touchCtx = document.getElementById('stage').getContext('2d');
-                touchCtx.clearRect(0,0,videoWidth,videoWidth)
-                drawStartText(touchCtx,this.num,videoWidth/2,videoWidth/2,'RED','80px bold 黑体')
-                this.num>0 ? this.num-=1 : clearInterval(this.int);
-
+                touchCtx.clearRect(0, 0, videoWidth, videoWidth)
+                drawStartText(touchCtx, this.num, videoWidth / 2, videoHeight / 2, 'RED', '80px bold 黑体')
+                this.num > 0 ? this.num -= 1 : clearInterval(this.int);
 
 
             },
 
             //触球
-            touchPoint(keypoints){
+            touchPoint(keypoints) {
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 const scoreCtx = document.getElementById('score').getContext('2d');
 
-                keypoints.forEach((v,i)=>{
-                    if(
-                        (v.position.x<=touchPoint.x+touchPoint.r&&v.position.x>touchPoint.x)
+                keypoints.forEach((v, i) => {
+                    if (
+                        (v.position.x <= touchPoint.x + touchPoint.r && v.position.x > touchPoint.x)
                         &&
-                        (v.position.y<=touchPoint.y+touchPoint.r&&v.position.y>touchPoint.y)
-                        && v.part.indexOf('Wrist')!=-1
-                    ){
+                        (v.position.y <= touchPoint.y + touchPoint.r && v.position.y > touchPoint.y)
+                        && v.part.indexOf('Wrist') != -1
+                    ) {
                         touchCtx.clearRect(0, 0, videoWidth, videoHeight)
-                        drawStartText(touchCtx,'+1',touchPoint.x+touchPoint.r/2,touchPoint.y/2+touchPoint.r,'#3a8ee6','60px bold 黑体')
+                        drawStartText(touchCtx, '+1', touchPoint.x + touchPoint.r / 2, touchPoint.y / 2 + touchPoint.r, '#3a8ee6', '60px bold 黑体')
                         touchPoint.x = ''
                         touchPoint.y = ''
-
-
                         this.score++
-                        scoreCtx.clearRect(0,0,80,80)
-                        drawStartText(scoreCtx,this.score,40,40,'#3a8ee6','60px bold 黑体')
+                        scoreCtx.clearRect(0, 0, 80, 80)
+                        drawStartText(scoreCtx, this.score, 40, 40, '#3a8ee6', '60px bold 黑体')
 
                     }
                 })
             },
             //结束
-            resetStart(){
+            resetStart() {
                 let touchCtx = document.getElementById('stage').getContext('2d');
                 const scoreCtx = document.getElementById('score').getContext('2d');
-                scoreCtx.clearRect(0,0,80,80)
-                this.num=3
-                this.score=0
-              this.gameStart=false
+                scoreCtx.clearRect(0, 0, 80, 80)
+                this.num = 3
+                this.score = 0
+                this.gameStart = false
                 touchCtx.clearRect(0, 0, videoWidth, videoHeight)
-              radiusRect(touchCtx,startBtn)
-              clearInterval(this.gameInt)
+                radiusRect(touchCtx, startBtn)
+                clearInterval(this.gameInt)
+            },
+
+            setConfigDia(){
+                this.configPop = true
+
+            },
+
+            //选项设置
+            changeConfig(){
+                this.configPop = false
+                this.bindPage()
             },
             //页面绑定
-            async  bindPage() {
+            async bindPage() {
+                let state = this.state
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 toggleLoadingUI(true);
                 const net = await posenet.load({
@@ -375,17 +451,16 @@
                     info.style.display = 'block';
                     throw e;
                 }
-                radiusRect(touchCtx,startBtn)
+                radiusRect(touchCtx, startBtn)
                 this.setupGui([], net);
                 this.detectPoseInRealTime(video, net);
 
             },
-            setRandomTouch(){
-                this.ctx.clearRect(0,0,videoWidth,videoWidth)
-                touchPoint.x = randomNum(0,videoWidth-touchPoint.r)
-                touchPoint.y = randomNum(0,videoWidth-touchPoint.r)
-
-                drawTouchImage(this.ctx,touchPoint.x , touchPoint.y,touchPoint.r,this.touchImg)
+            setRandomTouch() {
+                this.ctx.clearRect(0, 0, videoWidth, videoWidth)
+                touchPoint.x = randomNum(0, videoWidth - touchPoint.r)
+                touchPoint.y = randomNum(0, videoWidth - touchPoint.r)
+                drawTouchImage(this.ctx, touchPoint.x, touchPoint.y, touchPoint.r, this.touchImg)
             },
         },
     }
@@ -411,9 +486,11 @@
         text-align: center;
         margin: auto;
     }
-    #output{
+
+    #output {
         display: block;
     }
+
     @media only screen and (max-width: 600px) {
 
         .footer-text,
@@ -466,7 +543,8 @@
     .spinner-text {
         float: left;
     }
-    .resetBtn{
+
+    .resetBtn {
         color: #fff;
         font-size: 18px;
         width: 100px;
@@ -476,6 +554,34 @@
         border-radius: 5px;
         text-align: center;
         margin-top: 20px;
+
+    }
+
+    .videoConfig {
+        font-size: 18px;
+    }
+
+    .yd-btn-block {
+        margin: 0 auto;
+    }
+
+    .configBody {
+        color: #333;
+        font-size: 14px;
+        padding: 5px 10px;
+        .configItem{
+            .itemLable {
+                margin-right: 10px;
+                font-weight: bold;
+                font-size: 14px;
+                display: inline-block;
+                word-break: break-all;
+            }
+            .yd-radio{
+               margin: 5px 0;
+            }
+            padding: 5px 0;
+        }
 
     }
 </style>
