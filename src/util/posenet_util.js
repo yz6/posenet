@@ -94,9 +94,11 @@ export function radiusRect(ctx,obj) {
     ctx.strokeStyle = obj.color
     // 闭合路径
     ctx.closePath();
-    drawStartText(ctx,obj.text,obj.x+obj.w/2,obj.y+obj.h/2,obj.color)
+    ctx.fillStyle=obj.color;
+    ctx.fill();
+    drawStartText(ctx,obj.text,obj.x+obj.w/2,obj.y+obj.h/2,'#fff')
     ctx.stroke();
-    // ctx.fill();
+ 
 }
 
 export function randomNum(minNum,maxNum){

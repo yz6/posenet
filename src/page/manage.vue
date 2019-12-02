@@ -80,13 +80,13 @@
         interval:3000
     }
     const startBtn={
-        x:videoWidth-(videoWidth/10+150),
-        y:50,
-        w:150,
-        h:60,
+        x:videoWidth-(videoWidth/10+100),
+        y:40,
+        w:100,
+        h:50,
         radius:10,
         text:'开 始',
-        color:'#f00'
+        color:'aqua'
     }
 
     export default {
@@ -249,7 +249,7 @@
                         // console.log(keypoints)
                         if (score >= minPoseConfidence) {
                             // if (state.options.showPoints) {
-                                drawKeypoints(keypoints, minPartConfidence, ctx);
+                            //     drawKeypoints(keypoints, minPartConfidence, ctx);
                             //
                             // }
                             // if (state.options.showSkeleton) {
