@@ -8,7 +8,7 @@
             </div>
             <div class="sk-spinner sk-spinner-pulse"></div>
         </div>
-        <div id='main'>
+        <div id='main' v-show="pageShow">
             <video id="video" playsinline
                    style="
                     transform: scaleX(-1);
@@ -20,7 +20,7 @@
         ">
             </video>
             <div style="position: relative" >
-                <canvas id="output" v-show="pageShow">
+                <canvas id="output" >
 
                 </canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
