@@ -20,7 +20,7 @@
         ">
             </video>
             <div style="position: relative" >
-                <canvas id="output" >
+                <canvas id="output">
 
                 </canvas>
                 <canvas id="hand"  style="position: absolute;left: 0;top: 0;" :width="videoWidth"
@@ -271,12 +271,12 @@
                         // Important to purge variables and free up GPU memory
                         state.net.dispose();
                         toggleLoadingUI(true);
-                        // state.net = await posenet.load({
-                        //     architecture: state.changeToArchitecture,
-                        //     outputStride: state.outputStride,
-                        //     inputResolution: state.inputResolution,
-                        //     multiplier: state.multiplier,
-                        // });
+                        state.net = await posenet.load({
+                            architecture: state.changeToArchitecture,
+                            outputStride: state.outputStride,
+                            inputResolution: state.inputResolution,
+                            multiplier: state.multiplier,
+                        });
                         toggleLoadingUI(false);
                         state.architecture = state.changeToArchitecture;
                         state.changeToArchitecture = null;
@@ -290,30 +290,30 @@
                     let minPoseConfidence;
                     let minPartConfidence;
 
-                    // switch (state.algorithm) {
-                    //     case 'single-pose':
-                    //         const pose = await state.net.estimatePoses(video, {
-                    //             flipHorizontal: flipPoseHorizontal,
-                    //             decodingMethod: 'single-person'
-                    //         });
-                    //         poses = poses.concat(pose);
-                    //         minPoseConfidence = +state.singlePoseDetection.minPoseConfidence;
-                    //         minPartConfidence = +state.singlePoseDetection.minPartConfidence;
-                    //         break;
-                    //     case 'multi-pose':
-                    //         let all_poses = await state.net.estimatePoses(video, {
-                    //             flipHorizontal: flipPoseHorizontal,
-                    //             decodingMethod: 'multi-person',
-                    //             maxDetections: state.multiPoseDetection.maxPoseDetections,
-                    //             scoreThreshold: state.multiPoseDetection.minPartConfidence,
-                    //             nmsRadius: state.multiPoseDetection.nmsRadius
-                    //         });
-                    //
-                    //         poses = poses.concat(all_poses);
-                    //         minPoseConfidence = +state.multiPoseDetection.minPoseConfidence;
-                    //         minPartConfidence = +state.multiPoseDetection.minPartConfidence;
-                    //         break;
-                    // }
+                    switch (state.algorithm) {
+                        case 'single-pose':
+                            const pose = await state.net.estimatePoses(video, {
+                                flipHorizontal: flipPoseHorizontal,
+                                decodingMethod: 'single-person'
+                            });
+                            poses = poses.concat(pose);
+                            minPoseConfidence = +state.singlePoseDetection.minPoseConfidence;
+                            minPartConfidence = +state.singlePoseDetection.minPartConfidence;
+                            break;
+                        case 'multi-pose':
+                            let all_poses = await state.net.estimatePoses(video, {
+                                flipHorizontal: flipPoseHorizontal,
+                                decodingMethod: 'multi-person',
+                                maxDetections: state.multiPoseDetection.maxPoseDetections,
+                                scoreThreshold: state.multiPoseDetection.minPartConfidence,
+                                nmsRadius: state.multiPoseDetection.nmsRadius
+                            });
+
+                            poses = poses.concat(all_poses);
+                            minPoseConfidence = +state.multiPoseDetection.minPoseConfidence;
+                            minPartConfidence = +state.multiPoseDetection.minPartConfidence;
+                            break;
+                    }
 
                     ctx.clearRect(0, 0, videoWidth, videoHeight);
 
@@ -331,31 +331,31 @@
                     // For each pose (i.e. person) detected in an image, loop through the poses
                     // and draw the resulting skeleton and keypoints if over certain confidence
                     // scores
-                    // poses.forEach(({score, keypoints}) => {
-                    //     // console.log(keypoints)
-                    //     if (score >= minPoseConfidence) {
-                    //         // if (state.options.showPoints) {
-                    //         //     drawKeypoints(keypoints, minPartConfidence, ctx);
-                    //         //
-                    //         // }
-                    //         // if (state.options.showSkeleton) {
-                    //         // drawSkeleton(keypoints, minPartConfidence, ctx);
-                    //         // }
-                    //         // if (state.options.showBoundingBox) {
-                    //         //     drawBoundingBox(keypoints, ctx);
-                    //         // }
-                    //         if (that.gameStart) {
-                    //             if (that.num <= 0) {
-                    //
-                    //                 that.touchPoint(keypoints)
-                    //             }
-                    //         } else {
-                    //             that.handelStart(keypoints)
-                    //         }
-                    //
-                    //
-                    //     }
-                    // });
+                    poses.forEach(({score, keypoints}) => {
+                        // console.log(keypoints)
+                        if (score >= minPoseConfidence) {
+                            // if (state.options.showPoints) {
+                            //     drawKeypoints(keypoints, minPartConfidence, ctx);
+                            //
+                            // }
+                            if (state.options.showSkeleton) {
+                            drawSkeleton(keypoints, minPartConfidence, ctx);
+                            }
+                            // if (state.options.showBoundingBox) {
+                            //     drawBoundingBox(keypoints, ctx);
+                            // }
+                            if (that.gameStart) {
+                                if (that.num <= 0) {
+
+                                    that.touchPoint(keypoints)
+                                }
+                            } else {
+                                that.handelStart(keypoints)
+                            }
+
+
+                        }
+                    });
                     window.requestAnimationFrame(poseDetectionFrame);
                 }
 
@@ -363,13 +363,13 @@
             },
             //开始
             handelStart(keypoints) {
-                console.log(keypoints)
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 for (let i = 0; i < keypoints.length; i++) {
                     if (
-                        (keypoints[i].x <= startBtn.x + startBtn.w && keypoints[i].x > startBtn.x)
+                        (keypoints[i].position.x <= startBtn.x + startBtn.w && keypoints[i].position.x > startBtn.x)
                         &&
-                        (keypoints[i].y <= startBtn.y + startBtn.h && keypoints[i].y > startBtn.y)
+                        (keypoints[i].position.y <= startBtn.y + startBtn.h && keypoints[i].position.y > startBtn.y)
+                        && keypoints[i].part.indexOf('Wrist') != -1
                     ) {
                         this.gameStart = true
                         this.startTimeInter()
@@ -401,27 +401,26 @@
 
             //触球
             touchPoint(keypoints) {
-
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 const scoreCtx = document.getElementById('score').getContext('2d');
-                    keypoints.forEach((v, i) => {
-                        if (
-                            (v.x <= touchPoint.x + touchPoint.r && v.x > touchPoint.x)
-                            &&
-                            (v.y <= touchPoint.y + touchPoint.r && v.y > touchPoint.y)
-                        ) {
-                            touchCtx.clearRect(0, 0, videoWidth, videoHeight)
-                            drawStartText(touchCtx, '+1', touchPoint.x + touchPoint.r / 2, touchPoint.y / 2 + touchPoint.r, '#3a8ee6', '60px bold 黑体')
-                            touchPoint.x = ''
-                            touchPoint.y = ''
-                            this.score++
-                            scoreCtx.clearRect(0, 0, 80, 80)
-                            drawStartText(scoreCtx, this.score, 40, 40, '#3a8ee6', '60px bold 黑体')
 
-                        }
-                    })
+                keypoints.forEach((v, i) => {
+                    if (
+                        (v.position.x <= touchPoint.x + touchPoint.r && v.position.x > touchPoint.x)
+                        &&
+                        (v.position.y <= touchPoint.y + touchPoint.r && v.position.y > touchPoint.y)
+                        && v.part.indexOf('Wrist') != -1
+                    ) {
+                        touchCtx.clearRect(0, 0, videoWidth, videoHeight)
+                        drawStartText(touchCtx, '+1', touchPoint.x + touchPoint.r / 2, touchPoint.y / 2 + touchPoint.r, '#3a8ee6', '60px bold 黑体')
+                        touchPoint.x = ''
+                        touchPoint.y = ''
+                        this.score++
+                        scoreCtx.clearRect(0, 0, 80, 80)
+                        drawStartText(scoreCtx, this.score, 40, 40, '#3a8ee6', '60px bold 黑体')
 
-
+                    }
+                })
             },
             //结束
             resetStart() {
@@ -453,13 +452,13 @@
                 const touchCtx = document.getElementById('stage').getContext('2d');
 
                 toggleLoadingUI(true);
-                // const net = await posenet.load({
-                //     architecture: state.options.architecture,
-                //     outputStride: state.options.outputStride,
-                //     inputResolution: state.options.inputResolution,
-                //     multiplier: state.options.multiplier,
-                //     quantBytes: state.options.quantBytes
-                // });
+                const net = await posenet.load({
+                    architecture: state.options.architecture,
+                    outputStride: state.options.outputStride,
+                    inputResolution: state.options.inputResolution,
+                    multiplier: state.options.multiplier,
+                    quantBytes: state.options.quantBytes
+                });
                 toggleLoadingUI(false);
                 let video;
                 try {
@@ -477,17 +476,15 @@
                 //  })
                 this.model = await handTrack.load(modelParams)
                 radiusRect(touchCtx, startBtn)
-                // this.setupGui([], net);
-                // this.detectPoseInRealTime(video,net);
-                this.detectPoseInRealTime(video);
+                this.setupGui([], net);
+                this.detectPoseInRealTime(video, net);
 
             },
-            runDetection(video) {
-                let that = this
+            runDetection() {
                 this.handPoint = []
                 const canvas = document.getElementById('hand');
                 const context = canvas.getContext('2d')
-                // const video = document.getElementById("video");
+                const video = document.getElementById("video");
                 this.model.detect(video).then(predictions => {
                     // console.log(predictions)
                     predictions.forEach((v,i)=>{
@@ -497,16 +494,8 @@
                     })
                     this.model.renderPredictions(predictions, canvas, context, video);
                     predictions.forEach((v,i)=>{
-                        that.handPoint.push({x:v.bbox[0]+v.bbox[2]/2,y:v.bbox[1]+v.bbox[3]/2})
+                        this.handPoint.push({x:v.bbox[0]+v.bbox[2]/2,y:v.bbox[1]+v.bbox[3]/2})
                     })
-                    if (that.gameStart) {
-                        if (that.num <= 0) {
-
-                            that.touchPoint(that.handPoint)
-                        }
-                    } else {
-                        that.handelStart(that.handPoint)
-                    }
                 });
             },
             setRandomTouch() {
