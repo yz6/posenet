@@ -23,6 +23,8 @@
                 <canvas id="output" >
 
                 </canvas>
+                <canvas id="hand"  style="position: absolute;left: 0;top: 0;" :width="videoWidth"
+                        :height="videoHeight"></canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
                         :height="videoHeight"></canvas>
                 <canvas id="score" width="80" height="80" style="position: absolute;left: 0;top: 0"
@@ -74,12 +76,18 @@
                 </div>
             </yd-popup>
         </div>
-
     </div>
 </template>
 
 <script>
     import * as posenet from '@tensorflow-models/posenet';
+    // import * as handTrack from 'handtrackjs';
+
+    // const  tf =require('@tensorflow/tfjs') ;
+    import {loadGraphModel} from '@tensorflow/tfjs-converter';
+    const local_MODEL_URL = '../../static/web_model_1/model.json'
+    const MODEL_URL = 'https://storage.googleapis.com/tfjs-models/savedmodel/mobilenet_v2_1.0_224/model.json';
+
     import {
         drawSkeleton,
         isMobile,
@@ -89,7 +97,12 @@
         drawStartText,
         radiusRect
     } from '../util/posenet_util';
-
+    const modelParams = {
+        flipHorizontal: true,   // flip e.g for video
+        maxNumBoxes: 20,        // maximum number of boxes to detect
+        iouThreshold: 0.5,      // ioU threshold for non-max suppression
+        scoreThreshold: 0.6,    // confidence threshold for predictions.
+    }
     const videoWidth = document.body.clientWidth
     const videoHeight = document.body.clientHeight - 50
     const defaultQuantBytes = 2;
@@ -125,6 +138,7 @@
                 num: 3,
                 configPop: false,
                 facingMode:'user',
+                handPoint:[],
                 facingModeOpt:[
                     {
                         name:'前置',
@@ -237,12 +251,11 @@
                 }
             },
 
-            detectPoseInRealTime(video, net) {
+            detectPoseInRealTime(video, net,model) {
                 let that = this
                 let state = this.state
                 const canvas = document.getElementById('output');
                 const ctx = canvas.getContext('2d');
-
                 // since images are being fed from a webcam, we want to feed in the
                 // original image and then just flip the keypoints' x coordinates. If instead
                 // we flip the image, then correcting left-right keypoint pairs requires a
@@ -310,36 +323,39 @@
                         ctx.translate(-videoWidth, 0);
                         ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
                         ctx.restore();
+                        that.runDetection(video)
+
+
                     }
 
                     // For each pose (i.e. person) detected in an image, loop through the poses
                     // and draw the resulting skeleton and keypoints if over certain confidence
                     // scores
-                    poses.forEach(({score, keypoints}) => {
-                        // console.log(keypoints)
-                        if (score >= minPoseConfidence) {
-                            // if (state.options.showPoints) {
-                            //     drawKeypoints(keypoints, minPartConfidence, ctx);
-                            //
-                            // }
-                            // if (state.options.showSkeleton) {
-                            drawSkeleton(keypoints, minPartConfidence, ctx);
-                            // }
-                            // if (state.options.showBoundingBox) {
-                            //     drawBoundingBox(keypoints, ctx);
-                            // }
-                            if (that.gameStart) {
-                                if (that.num <= 0) {
-
-                                    that.touchPoint(keypoints)
-                                }
-                            } else {
-                                that.handelStart(keypoints)
-                            }
-
-
-                        }
-                    });
+                    // poses.forEach(({score, keypoints}) => {
+                    //     // console.log(keypoints)
+                    //     if (score >= minPoseConfidence) {
+                    //         // if (state.options.showPoints) {
+                    //         //     drawKeypoints(keypoints, minPartConfidence, ctx);
+                    //         //
+                    //         // }
+                    //         // if (state.options.showSkeleton) {
+                    //         // drawSkeleton(keypoints, minPartConfidence, ctx);
+                    //         // }
+                    //         // if (state.options.showBoundingBox) {
+                    //         //     drawBoundingBox(keypoints, ctx);
+                    //         // }
+                    //         if (that.gameStart) {
+                    //             if (that.num <= 0) {
+                    //
+                    //                 that.touchPoint(keypoints)
+                    //             }
+                    //         } else {
+                    //             that.handelStart(keypoints)
+                    //         }
+                    //
+                    //
+                    //     }
+                    // });
                     window.requestAnimationFrame(poseDetectionFrame);
                 }
 
@@ -347,13 +363,13 @@
             },
             //开始
             handelStart(keypoints) {
+                console.log(keypoints)
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 for (let i = 0; i < keypoints.length; i++) {
                     if (
-                        (keypoints[i].position.x <= startBtn.x + startBtn.w && keypoints[i].position.x > startBtn.x)
+                        (keypoints[i].x <= startBtn.x + startBtn.w && keypoints[i].x > startBtn.x)
                         &&
-                        (keypoints[i].position.y <= startBtn.y + startBtn.h && keypoints[i].position.y > startBtn.y)
-                        && keypoints[i].part.indexOf('Wrist') != -1
+                        (keypoints[i].y <= startBtn.y + startBtn.h && keypoints[i].y > startBtn.y)
                     ) {
                         this.gameStart = true
                         this.startTimeInter()
@@ -385,26 +401,27 @@
 
             //触球
             touchPoint(keypoints) {
+
                 const touchCtx = document.getElementById('stage').getContext('2d');
                 const scoreCtx = document.getElementById('score').getContext('2d');
+                    keypoints.forEach((v, i) => {
+                        if (
+                            (v.x <= touchPoint.x + touchPoint.r && v.x > touchPoint.x)
+                            &&
+                            (v.y <= touchPoint.y + touchPoint.r && v.y > touchPoint.y)
+                        ) {
+                            touchCtx.clearRect(0, 0, videoWidth, videoHeight)
+                            drawStartText(touchCtx, '+1', touchPoint.x + touchPoint.r / 2, touchPoint.y / 2 + touchPoint.r, '#3a8ee6', '60px bold 黑体')
+                            touchPoint.x = ''
+                            touchPoint.y = ''
+                            this.score++
+                            scoreCtx.clearRect(0, 0, 80, 80)
+                            drawStartText(scoreCtx, this.score, 40, 40, '#3a8ee6', '60px bold 黑体')
 
-                keypoints.forEach((v, i) => {
-                    if (
-                        (v.position.x <= touchPoint.x + touchPoint.r && v.position.x > touchPoint.x)
-                        &&
-                        (v.position.y <= touchPoint.y + touchPoint.r && v.position.y > touchPoint.y)
-                        && v.part.indexOf('Wrist') != -1
-                    ) {
-                        touchCtx.clearRect(0, 0, videoWidth, videoHeight)
-                        drawStartText(touchCtx, '+1', touchPoint.x + touchPoint.r / 2, touchPoint.y / 2 + touchPoint.r, '#3a8ee6', '60px bold 黑体')
-                        touchPoint.x = ''
-                        touchPoint.y = ''
-                        this.score++
-                        scoreCtx.clearRect(0, 0, 80, 80)
-                        drawStartText(scoreCtx, this.score, 40, 40, '#3a8ee6', '60px bold 黑体')
+                        }
+                    })
 
-                    }
-                })
+
             },
             //结束
             resetStart() {
@@ -434,6 +451,7 @@
                 this.pageShow = false
                 let state = this.state
                 const touchCtx = document.getElementById('stage').getContext('2d');
+
                 toggleLoadingUI(true);
                 const net = await posenet.load({
                     architecture: state.options.architecture,
@@ -453,10 +471,42 @@
                     throw e;
                 }
                 this.pageShow = true
+                // const model = await loadGraphModel(local_MODEL_URL);
+                //  handTrack.load().then(model=>{
+                //      console.log(model)
+                //  })
+                this.model = await handTrack.load(modelParams)
                 radiusRect(touchCtx, startBtn)
                 this.setupGui([], net);
                 this.detectPoseInRealTime(video, net);
 
+            },
+            runDetection(video) {
+                let that = this
+                this.handPoint = []
+                const canvas = document.getElementById('hand');
+                const context = canvas.getContext('2d')
+                // const video = document.getElementById("video");
+                this.model.detect(video).then(predictions => {
+                    // console.log(predictions)
+                    predictions.forEach((v,i)=>{
+                        if(v.score<0.8){
+                            predictions.splice(i,1)
+                        }
+                    })
+                    this.model.renderPredictions(predictions, canvas, context, video);
+                    predictions.forEach((v,i)=>{
+                        that.handPoint.push({x:v.bbox[0]+v.bbox[2]/2,y:v.bbox[1]+v.bbox[3]/2})
+                    })
+                    if (that.gameStart) {
+                        if (that.num <= 0) {
+
+                            that.touchPoint(that.handPoint)
+                        }
+                    } else {
+                        that.handelStart(that.handPoint)
+                    }
+                });
             },
             setRandomTouch() {
                 this.ctx.clearRect(0, 0, videoWidth, videoWidth)
