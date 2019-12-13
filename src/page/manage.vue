@@ -271,12 +271,12 @@
                         // Important to purge variables and free up GPU memory
                         state.net.dispose();
                         toggleLoadingUI(true);
-                        state.net = await posenet.load({
-                            architecture: state.changeToArchitecture,
-                            outputStride: state.outputStride,
-                            inputResolution: state.inputResolution,
-                            multiplier: state.multiplier,
-                        });
+                        // state.net = await posenet.load({
+                        //     architecture: state.changeToArchitecture,
+                        //     outputStride: state.outputStride,
+                        //     inputResolution: state.inputResolution,
+                        //     multiplier: state.multiplier,
+                        // });
                         toggleLoadingUI(false);
                         state.architecture = state.changeToArchitecture;
                         state.changeToArchitecture = null;
@@ -290,30 +290,30 @@
                     let minPoseConfidence;
                     let minPartConfidence;
 
-                    switch (state.algorithm) {
-                        case 'single-pose':
-                            const pose = await state.net.estimatePoses(video, {
-                                flipHorizontal: flipPoseHorizontal,
-                                decodingMethod: 'single-person'
-                            });
-                            poses = poses.concat(pose);
-                            minPoseConfidence = +state.singlePoseDetection.minPoseConfidence;
-                            minPartConfidence = +state.singlePoseDetection.minPartConfidence;
-                            break;
-                        case 'multi-pose':
-                            let all_poses = await state.net.estimatePoses(video, {
-                                flipHorizontal: flipPoseHorizontal,
-                                decodingMethod: 'multi-person',
-                                maxDetections: state.multiPoseDetection.maxPoseDetections,
-                                scoreThreshold: state.multiPoseDetection.minPartConfidence,
-                                nmsRadius: state.multiPoseDetection.nmsRadius
-                            });
-
-                            poses = poses.concat(all_poses);
-                            minPoseConfidence = +state.multiPoseDetection.minPoseConfidence;
-                            minPartConfidence = +state.multiPoseDetection.minPartConfidence;
-                            break;
-                    }
+                    // switch (state.algorithm) {
+                    //     case 'single-pose':
+                    //         const pose = await state.net.estimatePoses(video, {
+                    //             flipHorizontal: flipPoseHorizontal,
+                    //             decodingMethod: 'single-person'
+                    //         });
+                    //         poses = poses.concat(pose);
+                    //         minPoseConfidence = +state.singlePoseDetection.minPoseConfidence;
+                    //         minPartConfidence = +state.singlePoseDetection.minPartConfidence;
+                    //         break;
+                    //     case 'multi-pose':
+                    //         let all_poses = await state.net.estimatePoses(video, {
+                    //             flipHorizontal: flipPoseHorizontal,
+                    //             decodingMethod: 'multi-person',
+                    //             maxDetections: state.multiPoseDetection.maxPoseDetections,
+                    //             scoreThreshold: state.multiPoseDetection.minPartConfidence,
+                    //             nmsRadius: state.multiPoseDetection.nmsRadius
+                    //         });
+                    //
+                    //         poses = poses.concat(all_poses);
+                    //         minPoseConfidence = +state.multiPoseDetection.minPoseConfidence;
+                    //         minPartConfidence = +state.multiPoseDetection.minPartConfidence;
+                    //         break;
+                    // }
 
                     ctx.clearRect(0, 0, videoWidth, videoHeight);
 
@@ -453,13 +453,13 @@
                 const touchCtx = document.getElementById('stage').getContext('2d');
 
                 toggleLoadingUI(true);
-                const net = await posenet.load({
-                    architecture: state.options.architecture,
-                    outputStride: state.options.outputStride,
-                    inputResolution: state.options.inputResolution,
-                    multiplier: state.options.multiplier,
-                    quantBytes: state.options.quantBytes
-                });
+                // const net = await posenet.load({
+                //     architecture: state.options.architecture,
+                //     outputStride: state.options.outputStride,
+                //     inputResolution: state.options.inputResolution,
+                //     multiplier: state.options.multiplier,
+                //     quantBytes: state.options.quantBytes
+                // });
                 toggleLoadingUI(false);
                 let video;
                 try {
@@ -477,8 +477,9 @@
                 //  })
                 this.model = await handTrack.load(modelParams)
                 radiusRect(touchCtx, startBtn)
-                this.setupGui([], net);
-                this.detectPoseInRealTime(video, net);
+                // this.setupGui([], net);
+                // this.detectPoseInRealTime(video,net);
+                this.detectPoseInRealTime(video);
 
             },
             runDetection(video) {

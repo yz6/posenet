@@ -445,7 +445,7 @@
           <entry key="js" value="479" />
           <entry key="json" value="16" />
           <entry key="ts" value="1" />
-          <entry key="vue" value="8292" />
+          <entry key="vue" value="8301" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -454,7 +454,7 @@
           <entry key="JSON" value="16" />
           <entry key="JavaScript" value="479" />
           <entry key="TypeScript" value="1" />
-          <entry key="Vue.js" value="8292" />
+          <entry key="Vue.js" value="8301" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -472,8 +472,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="407" column="28" lean-forward="true" selection-start-line="407" selection-start-column="28" selection-end-line="407" selection-end-column="28" />
+            <state relative-caret-position="366">
+              <caret line="481" column="16" selection-start-line="481" selection-start-column="16" selection-end-line="481" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -494,7 +494,7 @@
         <entry file="file://$PROJECT_DIR$/node_modules/_handtrackjs@0.0.13@handtrackjs/src/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
-              <caret line="135" column="8" lean-forward="true" selection-start-line="135" selection-start-column="8" selection-end-line="135" selection-end-column="8" />
+              <caret line="135" column="8" selection-start-line="135" selection-start-column="8" selection-end-line="135" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -583,8 +583,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tf.fromPixels</find>
-      <find>fromPixels</find>
       <find>loadG</find>
       <find>cat</find>
       <find>MODEL_URL</find>
@@ -600,19 +598,21 @@
       <find>result</find>
       <find>tens</find>
       <find>tf.</find>
-      <find>poseDetectionFrame</find>
       <find>bindPage</find>
-      <find>posenet</find>
       <find>handTrack</find>
       <find>getElementById</find>
       <find>renderPredictions</find>
       <find>requestAnimationFrame</find>
-      <find>detectPoseInRealTime</find>
       <find>runDetection</find>
       <find>load</find>
       <find>触球</find>
       <find>handPoint</find>
       <find>touchPoint</find>
+      <find>poseDetectionFrame</find>
+      <find>posenet</find>
+      <find>net</find>
+      <find>setupGui</find>
+      <find>detectPoseInRealTime</find>
     </findStrings>
     <replaceStrings>
       <replace>岗位发布人</replace>
@@ -1052,12 +1052,12 @@
       <workItem from="1574743372795" duration="25069000" />
       <workItem from="1574992694527" duration="15447000" />
       <workItem from="1575252407434" duration="18568000" />
-      <workItem from="1575960852468" duration="49689000" />
+      <workItem from="1575960852468" duration="50252000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3050160000" />
+    <option name="totallyTimeSpent" value="3050723000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1072,7 +1072,7 @@
     <frame x="7" y="23" width="1433" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49858758" visible="true" weight="0.0" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49858758" visible="true" weight="0.0" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" sideWeight="0.50141245" side_tool="true" weight="0.13389711" />
@@ -1085,7 +1085,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.0" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.16525424" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003524" side_tool="true" weight="0.08469945" />
       <window_info anchor="bottom" id="查找" order="11" sideWeight="0.49964765" weight="0.73870057" />
       <window_info anchor="bottom" id="TypeScript" order="12" weight="0.32909605" />
@@ -1403,7 +1403,7 @@
     <entry file="file://$PROJECT_DIR$/node_modules/_handtrackjs@0.0.13@handtrackjs/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
-          <caret line="135" column="8" lean-forward="true" selection-start-line="135" selection-start-column="8" selection-end-line="135" selection-end-column="8" />
+          <caret line="135" column="8" selection-start-line="135" selection-start-column="8" selection-end-line="135" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -1416,8 +1416,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="407" column="28" lean-forward="true" selection-start-line="407" selection-start-column="28" selection-end-line="407" selection-end-column="28" />
+        <state relative-caret-position="366">
+          <caret line="481" column="16" selection-start-line="481" selection-start-column="16" selection-end-line="481" selection-end-column="16" />
           <folding>
             <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
