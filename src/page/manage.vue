@@ -19,55 +19,61 @@
                     display: none;
         ">
             </video>
-            <div style="position: relative" >
+            <div style="position: relative">
                 <canvas id="output">
 
                 </canvas>
-                <canvas id="hand"  style="position: absolute;left: 0;top: 0;" :width="videoWidth"
+                <canvas id="hand" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
                         :height="videoHeight"></canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
                         :height="videoHeight"></canvas>
                 <canvas id="score" width="80" height="80" style="position: absolute;left: 0;top: 0"
                         v-show="num==0"></canvas>
             </div>
-            <yd-button @click.native="resetStart"  size="large" type="hollow"  v-if="num==0">结 束</yd-button>
+            <yd-button @click.native="resetStart" size="large" type="hollow" v-if="num==0">结 束</yd-button>
             <div class="videoConfig" v-else>
-                <yd-button size="large" @click.native="setConfigDia"  bgcolor="aqua">参数设置</yd-button>
+                <yd-button size="large" @click.native="setConfigDia" bgcolor="aqua">参数设置</yd-button>
 
             </div>
-            <yd-popup v-model="configPop" position="center" width="90%" >
+            <yd-popup v-model="configPop" position="center" width="90%">
                 <div style="background-color:#fff;" class="configBody">
                     <div class="configItem">
-                        <span class="itemLable">摄像头: </span>  <yd-radio-group v-model="facingMode">
+                        <span class="itemLable">摄像头: </span>
+                        <yd-radio-group v-model="facingMode">
 
-                        <yd-radio v-for="item in facingModeOpt" :key="item.value"
-                                  :val="item.value">{{item.name}}</yd-radio>
-                    </yd-radio-group>
+                            <yd-radio v-for="item in facingModeOpt" :key="item.value"
+                                      :val="item.value">{{item.name}}
+                            </yd-radio>
+                        </yd-radio-group>
                     </div>
                     <div class="configItem">
-                        <span class="itemLable">outputStride: </span>  <yd-radio-group v-model="state.options.outputStride">
+                        <span class="itemLable">outputStride: </span>
+                        <yd-radio-group v-model="state.options.outputStride">
 
-                        <yd-radio v-for="item in state.options.outputStrideOpt" :key="item"
-                                  :val="item"></yd-radio>
-                    </yd-radio-group>
-                    </div>
-                   <div class="configItem">
-                       <span class="itemLable">inputResolution: </span> <yd-radio-group v-model="state.options.inputResolution">
-                           <yd-radio v-for="item in state.options.inputResolutionOpt" :key="item"
-                                     :val="item"></yd-radio>
-                       </yd-radio-group>
-                   </div>
-                    <div class="configItem">
-                        <span class="itemLable">multiplier: </span> <yd-radio-group v-model="state.options.multiplier">
-                        <yd-radio v-for="item in state.options.multiplierOpt" :key="item"
-                                  :val="item"></yd-radio>
-                    </yd-radio-group>
+                            <yd-radio v-for="item in state.options.outputStrideOpt" :key="item"
+                                      :val="item"></yd-radio>
+                        </yd-radio-group>
                     </div>
                     <div class="configItem">
-                        <span class="itemLable">quantBytes: </span> <yd-radio-group v-model="state.options.quantBytes">
-                        <yd-radio v-for="item in state.options.quantBytesOpt" :key="item"
-                                  :val="item"></yd-radio>
-                    </yd-radio-group>
+                        <span class="itemLable">inputResolution: </span>
+                        <yd-radio-group v-model="state.options.inputResolution">
+                            <yd-radio v-for="item in state.options.inputResolutionOpt" :key="item"
+                                      :val="item"></yd-radio>
+                        </yd-radio-group>
+                    </div>
+                    <div class="configItem">
+                        <span class="itemLable">multiplier: </span>
+                        <yd-radio-group v-model="state.options.multiplier">
+                            <yd-radio v-for="item in state.options.multiplierOpt" :key="item"
+                                      :val="item"></yd-radio>
+                        </yd-radio-group>
+                    </div>
+                    <div class="configItem">
+                        <span class="itemLable">quantBytes: </span>
+                        <yd-radio-group v-model="state.options.quantBytes">
+                            <yd-radio v-for="item in state.options.quantBytesOpt" :key="item"
+                                      :val="item"></yd-radio>
+                        </yd-radio-group>
                     </div>
                     <p style="text-align: center;">
                         <yd-button @click.native="changeConfig">确定</yd-button>
@@ -81,11 +87,13 @@
 
 <script>
     import * as posenet from '@tensorflow-models/posenet';
-    // import * as handTrack from 'handtrackjs';
+    // import * as handTrack from 'handtrackjs';local_MODEL_URL
 
-    // const  tf =require('@tensorflow/tfjs') ;
+    // const tf = require('@tensorflow/tfjs');
     import {loadGraphModel} from '@tensorflow/tfjs-converter';
-    const local_MODEL_URL = '../../static/web_model_1/model.json'
+    // import '@tensorflow/tfjs'
+    import * as cocoSsd from '@tensorflow-models/coco-ssd';
+    const local_MODEL_URL = '../../static/tf-js-/model.json'
     const MODEL_URL = 'https://storage.googleapis.com/tfjs-models/savedmodel/mobilenet_v2_1.0_224/model.json';
 
     import {
@@ -95,8 +103,11 @@
         drawTouchImage,
         randomNum,
         drawStartText,
-        radiusRect
+        radiusRect,
+        drawBoundingBox,
+        drawBallBoxes
     } from '../util/posenet_util';
+
     const modelParams = {
         flipHorizontal: true,   // flip e.g for video
         maxNumBoxes: 20,        // maximum number of boxes to detect
@@ -137,16 +148,16 @@
                 gameStart: false,
                 num: 3,
                 configPop: false,
-                facingMode:'user',
-                handPoint:[],
-                facingModeOpt:[
+                facingMode: 'user',
+                handPoint: [],
+                facingModeOpt: [
                     {
-                        name:'前置',
-                        value:'user'
+                        name: '前置',
+                        value: 'user'
                     },
                     {
-                        name:'后置',
-                        value:'environment'
+                        name: '后置',
+                        value: 'environment'
                     }
                 ],
                 state: {
@@ -159,7 +170,7 @@
                         inputResolution: defaultMobileNetInputResolution,
                         inputResolutionOpt: [200, 400, 600, 800],
                         multiplier: defaultMobileNetMultiplier,
-                        multiplierOpt: [0.5,0.75,1.01, 1.0],
+                        multiplierOpt: [0.5, 0.75, 1.01, 1.0],
                         quantBytes: defaultQuantBytes,
                         quantBytesOpt: [1, 2, 4],
                         showVideo: true,
@@ -179,7 +190,7 @@
                     },
                     net: null,
                 },
-                pageShow:false
+                pageShow: false
             }
         },
         async mounted() {
@@ -251,7 +262,7 @@
                 }
             },
 
-            detectPoseInRealTime(video, net,model) {
+            detectPoseInRealTime(video, net, model) {
                 let that = this
                 let state = this.state
                 const canvas = document.getElementById('output');
@@ -287,6 +298,7 @@
                     // stats.begin();
 
                     let poses = [];
+                    let predictions=[]
                     let minPoseConfidence;
                     let minPartConfidence;
 
@@ -323,11 +335,19 @@
                         ctx.translate(-videoWidth, 0);
                         ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
                         ctx.restore();
-                        that.runDetection(video)
-
-
+                        // const tfImg = tf.browser.fromPixels(video);
+                        // const smalImg = tf.image.resizeBilinear(tfImg, [300, 300]);
+                        // const resized = tf.cast(smalImg, 'float32');
+                        // const t4d = tf.tensor4d(Array.from(resized.dataSync()),[1,300,300,3])
+                        // console.log(t4d)
+                        // console.log(imageTensor)
+                        // that.model.executeAsync(batched).then(res=>{
+                        //     console.log(res)
+                        // })
+                        // that.runDetection(video)
                     }
-
+                    predictions = await model.detect(video);
+                    drawBallBoxes(predictions,ctx,'sports ball')
                     // For each pose (i.e. person) detected in an image, loop through the poses
                     // and draw the resulting skeleton and keypoints if over certain confidence
                     // scores
@@ -339,11 +359,11 @@
                             //
                             // }
                             if (state.options.showSkeleton) {
-                            drawSkeleton(keypoints, minPartConfidence, ctx);
+                                drawSkeleton(keypoints, minPartConfidence, ctx);
                             }
-                            // if (state.options.showBoundingBox) {
-                            //     drawBoundingBox(keypoints, ctx);
-                            // }
+                            // console.log(keypoints)
+                                // drawBoundingBox(keypoints, ctx);
+
                             if (that.gameStart) {
                                 if (that.num <= 0) {
 
@@ -382,6 +402,7 @@
 
 
             },
+
             //开始3s
             startTimeInter() {
                 const touchCtx = document.getElementById('stage').getContext('2d');
@@ -435,13 +456,13 @@
                 clearInterval(this.gameInt)
             },
 
-            setConfigDia(){
+            setConfigDia() {
                 this.configPop = true
 
             },
 
             //选项设置
-            changeConfig(){
+            changeConfig() {
                 this.configPop = false
                 this.bindPage()
             },
@@ -459,6 +480,7 @@
                     multiplier: state.options.multiplier,
                     quantBytes: state.options.quantBytes
                 });
+                const model = await cocoSsd.load();
                 toggleLoadingUI(false);
                 let video;
                 try {
@@ -470,14 +492,17 @@
                     throw e;
                 }
                 this.pageShow = true
-                // const model = await loadGraphModel(local_MODEL_URL);
-                //  handTrack.load().then(model=>{
-                //      console.log(model)
-                //  })
-                this.model = await handTrack.load(modelParams)
+                // this.model = await loadGraphModel(local_MODEL_URL);
+                // handTrack.load().then(model=>{
+                //     console.log(model)
+                // })
+                // const result = await this.model.executeAsync(tf.zeros([1, 300, 300, 3]));
+                // result.map(async (t) => await t.data());
+                // result.map(async (t) => t.dispose());
+                // this.model = await handTrack.load(modelParams)
                 radiusRect(touchCtx, startBtn)
                 this.setupGui([], net);
-                this.detectPoseInRealTime(video, net);
+                this.detectPoseInRealTime(video, net,model);
 
             },
             runDetection() {
@@ -487,14 +512,14 @@
                 const video = document.getElementById("video");
                 this.model.detect(video).then(predictions => {
                     // console.log(predictions)
-                    predictions.forEach((v,i)=>{
-                        if(v.score<0.8){
-                            predictions.splice(i,1)
+                    predictions.forEach((v, i) => {
+                        if (v.score < 0.8) {
+                            predictions.splice(i, 1)
                         }
                     })
                     this.model.renderPredictions(predictions, canvas, context, video);
-                    predictions.forEach((v,i)=>{
-                        this.handPoint.push({x:v.bbox[0]+v.bbox[2]/2,y:v.bbox[1]+v.bbox[3]/2})
+                    predictions.forEach((v, i) => {
+                        this.handPoint.push({x: v.bbox[0] + v.bbox[2] / 2, y: v.bbox[1] + v.bbox[3] / 2})
                     })
                 });
             },
@@ -611,7 +636,7 @@
         color: #333;
         font-size: 14px;
         padding: 5px 10px;
-        .configItem{
+        .configItem {
             .itemLable {
                 margin-right: 10px;
                 font-weight: bold;
@@ -619,8 +644,8 @@
                 display: inline-block;
                 word-break: break-all;
             }
-            .yd-radio{
-               margin: 5px 0;
+            .yd-radio {
+                margin: 5px 0;
             }
             padding: 5px 0;
         }

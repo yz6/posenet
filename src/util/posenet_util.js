@@ -172,7 +172,23 @@ export function drawBoundingBox(keypoints, ctx) {
   ctx.strokeStyle = boundingBoxColor;
   ctx.stroke();
 }
-
+//画球的框
+export function drawBallBoxes(result, context,classify) {
+    for (let i = 0; i < result.length; i++) {
+        if(result[i].class==classify){
+            context.beginPath();
+            context.rect(...result[i].bbox);
+            context.lineWidth = 1;
+            context.strokeStyle = 'green';
+            context.fillStyle = 'green';
+            context.stroke();
+            context.fillText(
+                result[i].score.toFixed(3) + ' ' + result[i].class, result[i].bbox[0],
+                result[i].bbox[1] > 10 ? result[i].bbox[1] - 5 : 10);
+        }
+       
+    }
+}
 /**
  * Converts an arary of pixel data into an ImageData object
  */
