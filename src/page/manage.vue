@@ -12,7 +12,7 @@
             <video id="video" playsinline
                    style="
                     display: none;
-        " :style="facingModeOpt=='user'?'':{  'transform': 'scaleX('+-1+')',
+        " :style="facingMode=='user'?'':{  'transform': 'scaleX('+-1+')',
                    '-ms-transform': 'translateX('+-1+')',
                   '-moz-transform':'scaleX('+-1+')',
                   '-o-transform': 'scaleX('+-1+')',
