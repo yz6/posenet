@@ -11,11 +11,11 @@
         <div id='main' v-show="pageShow">
             <video id="video" playsinline
                    style="
-                    transform: rotateY(180deg);
-                    -ms-transform: rotateY(180deg);
-                   -moz-transform:rotateY(180deg);
-                   -o-transform: rotateY(180deg);
-                   -webkit-transform: rotateY(180deg);
+                    transform: scaleX(-1);
+                    -ms-transform: translateX(-1);
+                   -moz-transform:scaleX(-1);
+                   -o-transform: scaleX(-1);
+                   -webkit-transform: scaleX(-1);
                     display: none;
         ">
             </video>
@@ -346,7 +346,7 @@
                         // })
                         // that.runDetection(video)
                     }
-                    predictions = await model.detect(video);
+                    predictions = await model.detect(canvas);
                     drawBallBoxes(predictions,ctx,'sports ball')
                     // For each pose (i.e. person) detected in an image, loop through the poses
                     // and draw the resulting skeleton and keypoints if over certain confidence
@@ -480,7 +480,7 @@
                     multiplier: state.options.multiplier,
                     quantBytes: state.options.quantBytes
                 });
-                const model = await cocoSsd.load(modelParams);
+                const model = await cocoSsd.load();
                 toggleLoadingUI(false);
                 let video;
                 try {
