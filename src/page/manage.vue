@@ -480,7 +480,7 @@
                     multiplier: state.options.multiplier,
                     quantBytes: state.options.quantBytes
                 });
-                const model = await cocoSsd.load();
+                const model = await cocoSsd.load(modelParams);
                 toggleLoadingUI(false);
                 let video;
                 try {
