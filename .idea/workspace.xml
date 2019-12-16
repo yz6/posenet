@@ -445,7 +445,7 @@
           <entry key="js" value="543" />
           <entry key="json" value="24" />
           <entry key="ts" value="1" />
-          <entry key="vue" value="9254" />
+          <entry key="vue" value="9352" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -454,7 +454,7 @@
           <entry key="JSON" value="24" />
           <entry key="JavaScript" value="543" />
           <entry key="TypeScript" value="1" />
-          <entry key="Vue.js" value="9254" />
+          <entry key="Vue.js" value="9352" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -472,8 +472,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="348" column="61" selection-start-line="348" selection-start-column="61" selection-end-line="348" selection-end-column="61" />
+            <state relative-caret-position="295">
+              <caret line="17" column="51" lean-forward="true" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -565,8 +565,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fromPixels</find>
-      <find>executeAsync</find>
       <find>local_MODEL_URL</find>
       <find>startTimeInter</find>
       <find>calculateMaxScores</find>
@@ -591,10 +589,12 @@
       <find>false</find>
       <find>modelParams</find>
       <find>sports</find>
-      <find>video</find>
       <find>drawBallBoxes</find>
       <find>result</find>
       <find>detectPoseInRealTime</find>
+      <find>前置</find>
+      <find>facingModeOpt</find>
+      <find>video</find>
     </findStrings>
     <replaceStrings>
       <replace>岗位发布人</replace>
@@ -1030,12 +1030,12 @@
       <workItem from="1574743372795" duration="25069000" />
       <workItem from="1574992694527" duration="15447000" />
       <workItem from="1575252407434" duration="18568000" />
-      <workItem from="1575960852468" duration="70379000" />
+      <workItem from="1575960852468" duration="71112000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3070850000" />
+    <option name="totallyTimeSpent" value="3071583000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1063,7 +1063,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.27259886" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.18361582" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003524" side_tool="true" weight="0.08469945" />
       <window_info anchor="bottom" id="查找" order="11" sideWeight="0.49964765" weight="0.73870057" />
       <window_info anchor="bottom" id="TypeScript" order="12" weight="0.32909605" />
@@ -1402,8 +1402,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/page/manage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="348" column="61" selection-start-line="348" selection-start-column="61" selection-end-line="348" selection-end-column="61" />
+        <state relative-caret-position="295">
+          <caret line="17" column="51" lean-forward="true" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
           <folding>
             <element signature="n#style#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />

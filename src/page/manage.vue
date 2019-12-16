@@ -11,13 +11,12 @@
         <div id='main' v-show="pageShow">
             <video id="video" playsinline
                    style="
-                    transform: scaleX(-1);
-                    -ms-transform: translateX(-1);
-                   -moz-transform:scaleX(-1);
-                   -o-transform: scaleX(-1);
-                   -webkit-transform: scaleX(-1);
                     display: none;
-        ">
+        " :style="facingModeOpt=='user'?'':{  'transform': 'scaleX('+-1+')',
+                   '-ms-transform': 'translateX('+-1+')',
+                  '-moz-transform':'scaleX('+-1+')',
+                  '-o-transform': 'scaleX('+-1+')',
+                  '-webkit-transform': 'scaleX('+-1+')'}">
             </video>
             <div style="position: relative">
                 <canvas id="output">
