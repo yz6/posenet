@@ -11,11 +11,11 @@
         <div id='main' v-show="pageShow">
             <video id="video" playsinline
                    style="
-                    transform: scaleX(-1);
-                    -ms-transform: translateX(-1);
-                   -moz-transform:scaleX(-1);
-                   -o-transform: scaleX(-1);
-                   -webkit-transform: scaleX(-1);
+                    transform: rotateY(180deg);
+                    -ms-transform: rotateY(180deg);
+                   -moz-transform:rotateY(180deg);
+                   -o-transform: rotateY(180deg);
+                   -webkit-transform: rotateY(180deg);
                     display: none;
         ">
             </video>
