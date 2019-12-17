@@ -10,9 +10,7 @@
         </div>
         <div id='main' v-show="pageShow">
             <video id="video" playsinline
-                   style="
-                    display: none;
-        " :style="facingMode=='user'?'':{  'transform': 'scaleX('+-1+')',
+                   style="display: none;" :style="facingMode=='environment'?'':{  'transform': 'scaleX('+-1+')',
                    '-ms-transform': 'translateX('+-1+')',
                   '-moz-transform':'scaleX('+-1+')',
                   '-o-transform': 'scaleX('+-1+')',
@@ -345,8 +343,10 @@
                         // })
                         // that.runDetection(video)
                     }
-                    predictions = await model.detect(canvas);
-                    drawBallBoxes(predictions,ctx,'sports ball')
+
+                    // predictions = await model.detect(canvas);
+                    // drawBallBoxes(predictions,ctx,'sports ball')
+
                     // For each pose (i.e. person) detected in an image, loop through the poses
                     // and draw the resulting skeleton and keypoints if over certain confidence
                     // scores
@@ -479,7 +479,7 @@
                     multiplier: state.options.multiplier,
                     quantBytes: state.options.quantBytes
                 });
-                const model = await cocoSsd.load();
+                // const model = await cocoSsd.load();
                 toggleLoadingUI(false);
                 let video;
                 try {
@@ -501,7 +501,7 @@
                 // this.model = await handTrack.load(modelParams)
                 radiusRect(touchCtx, startBtn)
                 this.setupGui([], net);
-                this.detectPoseInRealTime(video, net,model);
+                this.detectPoseInRealTime(video, net);
 
             },
             runDetection() {
