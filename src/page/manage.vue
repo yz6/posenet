@@ -99,6 +99,7 @@
         toggleLoadingUI,
         drawTouchImage,
         randomNum,
+        drawKeypoints,
         drawStartText,
         radiusRect,
         drawBoundingBox,
@@ -111,13 +112,14 @@
         iouThreshold: 0.5,      // ioU threshold for non-max suppression
         scoreThreshold: 0.6,    // confidence threshold for predictions.
     }
-    const videoWidth = document.body.clientWidth
-    const videoHeight = document.body.clientHeight - 50
+    const videoWidth = 500;
+    const videoHeight = 500;
+    console.log(videoWidth)
+    console.log(videoHeight)
     const defaultQuantBytes = 2;
     const defaultMobileNetMultiplier = 0.75;
     const defaultMobileNetStride = 16;
-    const defaultMobileNetInputResolution = 200;
-
+    const defaultMobileNetInputResolution = 400;
     const touchPoint = {
         x: '',
         y: '',
@@ -133,7 +135,6 @@
         text: '开 始',
         color: 'aqua'
     }
-
     export default {
         data() {
             return {
@@ -164,7 +165,7 @@
                         architecture: 'MobileNetV1',
                         outputStride: defaultMobileNetStride,
                         outputStrideOpt: [8, 16],
-                        inputResolution: defaultMobileNetInputResolution,
+                        inputResolution: {width:videoWidth,height:videoHeight},
                         inputResolutionOpt: [200, 400, 600, 800],
                         multiplier: defaultMobileNetMultiplier,
                         multiplierOpt: [0.5, 0.75, 1.01, 1.0],
@@ -181,7 +182,7 @@
                     },
                     multiPoseDetection: {
                         maxPoseDetections: 5,
-                        minPoseConfidence: 0.15,
+                        minPoseConfidence: 0.1,
                         minPartConfidence: 0.1,
                         nmsRadius: 30.0,
                     },
@@ -354,14 +355,14 @@
                         // console.log(keypoints)
                         if (score >= minPoseConfidence) {
                             // if (state.options.showPoints) {
-                            //     drawKeypoints(keypoints, minPartConfidence, ctx);
+                                drawKeypoints(keypoints, minPartConfidence, ctx);
                             //
                             // }
                             if (state.options.showSkeleton) {
                                 drawSkeleton(keypoints, minPartConfidence, ctx);
                             }
                             // console.log(keypoints)
-                                // drawBoundingBox(keypoints, ctx);
+                            //     drawBoundingBox(keypoints, ctx);
 
                             if (that.gameStart) {
                                 if (that.num <= 0) {
@@ -398,8 +399,6 @@
 
                     }
                 }
-
-
             },
 
             //开始3s
@@ -415,10 +414,7 @@
                 touchCtx.clearRect(0, 0, videoWidth, videoWidth)
                 drawStartText(touchCtx, this.num, videoWidth / 2, videoHeight / 2, 'RED', '80px bold 黑体')
                 this.num > 0 ? this.num -= 1 : clearInterval(this.int);
-
-
             },
-
             //触球
             touchPoint(keypoints) {
                 const touchCtx = document.getElementById('stage').getContext('2d');
@@ -470,7 +466,6 @@
                 this.pageShow = false
                 let state = this.state
                 const touchCtx = document.getElementById('stage').getContext('2d');
-
                 toggleLoadingUI(true);
                 const net = await posenet.load({
                     architecture: state.options.architecture,
@@ -479,7 +474,6 @@
                     multiplier: state.options.multiplier,
                     quantBytes: state.options.quantBytes
                 });
-                // const model = await cocoSsd.load();
                 toggleLoadingUI(false);
                 let video;
                 try {
@@ -491,14 +485,6 @@
                     throw e;
                 }
                 this.pageShow = true
-                // this.model = await loadGraphModel(local_MODEL_URL);
-                // handTrack.load().then(model=>{
-                //     console.log(model)
-                // })
-                // const result = await this.model.executeAsync(tf.zeros([1, 300, 300, 3]));
-                // result.map(async (t) => await t.data());
-                // result.map(async (t) => t.dispose());
-                // this.model = await handTrack.load(modelParams)
                 radiusRect(touchCtx, startBtn)
                 this.setupGui([], net);
                 this.detectPoseInRealTime(video, net);
@@ -625,6 +611,9 @@
 
     .videoConfig {
         font-size: 18px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
     }
 
     .yd-btn-block {
