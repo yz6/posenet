@@ -20,8 +20,8 @@
                 <canvas id="output">
 
                 </canvas>
-                <canvas id="hand" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
-                        :height="videoHeight"></canvas>
+                <!--<canvas id="hand" style="position: absolute;left: 0;top: 0;" :width="videoWidth"-->
+                        <!--:height="videoHeight"></canvas>-->
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
                         :height="videoHeight"></canvas>
                 <canvas id="score" width="80" height="80" style="position: absolute;left: 0;top: 0"
@@ -165,8 +165,8 @@
                         architecture: 'MobileNetV1',
                         outputStride: defaultMobileNetStride,
                         outputStrideOpt: [8, 16],
-                        inputResolution: {width:videoWidth,height:videoHeight},
-                        inputResolutionOpt: [200, 400, 600, 800],
+                        inputResolution: 200,
+                        inputResolutionOpt: [200, 400, 500,600, 800],
                         multiplier: defaultMobileNetMultiplier,
                         multiplierOpt: [0.5, 0.75, 1.01, 1.0],
                         quantBytes: defaultQuantBytes,
@@ -367,10 +367,10 @@
                             if (that.gameStart) {
                                 if (that.num <= 0) {
 
-                                    that.touchPoint(keypoints)
+                                    // that.touchPoint(keypoints)
                                 }
                             } else {
-                                that.handelStart(keypoints)
+                                // that.handelStart(keypoints)
                             }
 
 
@@ -447,7 +447,7 @@
                 this.score = 0
                 this.gameStart = false
                 touchCtx.clearRect(0, 0, videoWidth, videoHeight)
-                radiusRect(touchCtx, startBtn)
+                // radiusRect(touchCtx, startBtn)
                 clearInterval(this.gameInt)
             },
 
@@ -485,7 +485,7 @@
                     throw e;
                 }
                 this.pageShow = true
-                radiusRect(touchCtx, startBtn)
+                // radiusRect(touchCtx, startBtn)
                 this.setupGui([], net);
                 this.detectPoseInRealTime(video, net);
 
@@ -607,6 +607,9 @@
         text-align: center;
         margin-top: 5px;
 
+    }
+    #output{
+        margin: 0 auto;
     }
 
     .videoConfig {
