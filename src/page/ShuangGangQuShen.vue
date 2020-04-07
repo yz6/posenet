@@ -15,14 +15,14 @@
                   '-o-transform': 'scaleX('+-1+')',
                   '-webkit-transform': 'scaleX('+-1+')'}">
             </video>
-            <div style="position: relative;width: 100%;height: 100%">
+            <div style="position: relative;width: 100%;height: 100%"  @mousemove="canMove?mouseMoving($event):''" >
                 <canvas id="output">
 
                 </canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
                         :height="videoHeight"></canvas>
-                <div  @touchmove="barMoving($event)" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
-                <!--<div v-else @mousedown="mousedown" @mouseup="mouseup" @mousemove="canMove?mouseMoving($event):''" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>-->
+                <div v-if="isMobile" @touchmove="barMoving($event)" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
+                <div v-else @mousedown="mousedown" @mouseup="mouseup" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
                 <div class="readyStage" v-if="!gameStart ">
                     <div class="readyTips">移动黄线至双杠位置</div>
                     <div class="startBtn" @click="handleStart">开始</div>
@@ -256,25 +256,26 @@
                 poseDetectionFrame();
             },
 
-            // mousedown(){
-            //   this.canMove = true
-            // },
-            // mouseup(){
-            //     this.canMove = false
-            // },
-            // //鼠标移动
-            // mouseMoving(e){
-            //     console.log(e)
-            //     if(e.pageY<0){
-            //         this.parallelBars.top = 0
-            //     }else if(e.pageY>videoHeight-20){
-            //         this.parallelBars.top = videoHeight-20
-            //     }else{
-            //         this.parallelBars.top = e.pageY
-            //     }
-            // },
+            mousedown(){
+              this.canMove = true
+            },
+            mouseup(){
+                this.canMove = false
+            },
+            //鼠标移动
+            mouseMoving(e){
+                console.log(e)
+                if(e.pageY<0){
+                    this.parallelBars.top = 0
+                }else if(e.pageY>videoHeight-20){
+                    this.parallelBars.top = videoHeight-20
+                }else{
+                    this.parallelBars.top = e.pageY
+                }
+            },
             //移动bar
             barMoving(e){
+                console.log(e)
                 if(e.touches[0].pageY<0){
                     this.parallelBars.top = 0
                 }else if(e.touches[0].pageY>videoHeight-20){
