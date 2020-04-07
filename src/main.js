@@ -16,7 +16,7 @@ import {Popup} from 'vue-ydui/dist/lib.px/popup';
 import {Radio, RadioGroup} from 'vue-ydui/dist/lib.px/radio';
 import {Button, ButtonGroup} from 'vue-ydui/dist/lib.px/button';
 /* 使用px：import {ActionSheet} from 'vue-ydui/dist/lib.px/actionsheet'; */
-
+import 'lib-flexible/flexible'
 Vue.component(Popup.name, Popup);
 Vue.component(Radio.name, Radio);
 Vue.component(RadioGroup.name, RadioGroup);

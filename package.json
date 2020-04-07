@@ -33,6 +33,7 @@
     "js-file-download": "^0.4.4",
     "js-md5": "^0.7.3",
     "jspdf": "^1.4.1",
+    "lib-flexible": "^0.3.2",
     "particles.js": "^2.0.0",
     "print-js": "^1.0.53",
     "time-formater": "^1.0.1",

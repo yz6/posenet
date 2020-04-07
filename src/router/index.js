@@ -3,14 +3,14 @@ import Router from 'vue-router'
 import store from '../store/'
 Vue.use(Router)
 
-const manage = r => require.ensure([], () => r(require('@/page/manage')), 'index');
+const ShuangGangQuShen = r => require.ensure([], () => r(require('@/page/ShuangGangQuShen')), 'ShuangGangQuShen');
 
 
 
 const routes = [
     {
-        path: '/',
-        component: manage,
+        path: '/ShuangGangQuShen',
+        component: ShuangGangQuShen,
         meta: ['首页'],
         children: []
     }
