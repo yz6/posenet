@@ -21,9 +21,10 @@
                 </canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
                         :height="videoHeight"></canvas>
-                <div @touchmove="barMoving($event)" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
+                <div  @touchmove="barMoving($event)" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
+                <!--<div v-else @mousedown="mousedown" @mouseup="mouseup" @mousemove="canMove?mouseMoving($event):''" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>-->
                 <div class="readyStage" v-if="!gameStart ">
-                    <div class="readyTips">将黄线移动至双杠位置</div>
+                    <div class="readyTips">移动黄线至双杠位置</div>
                     <div class="startBtn" @click="handleStart">开始</div>
 
                 </div>
@@ -36,7 +37,7 @@
                 </div>
                 <div class="result" v-if="gameResult">
                     <div class="resultModal">
-                        <div class="resultScore">{{score}}</div>
+                        <div class="resultScore" >{{score}}</div>
                         <div class="info">
                             次数
                         </div>
@@ -48,11 +49,6 @@
                 </div>
 
             </div>
-            <!--<div class="videoConfig" v-else>-->
-                <!--<yd-button size="large" @click.native="setConfigDia" bgcolor="aqua">参数设置</yd-button>-->
-
-            <!--</div>-->
-
         </div>
     </div>
 </template>
@@ -79,6 +75,8 @@
                 armStatus:0,
                 armStatusArr:[],
                 ctx: Object,
+                isMobile:false,
+                canMove:false,
                 videoWidth: videoWidth,
                 videoHeight: videoHeight,
                 facingMode: 'user',
@@ -89,6 +87,7 @@
                 parallelBars:{
                     top:videoHeight*0.7
                 },
+                status:0,
                 state: {
                     algorithm: 'multi-pose',
                     options: {
@@ -120,6 +119,17 @@
                 },
                 pageShow: false
             }
+        },
+        created(){
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            if (/ipad|iphone|midp|rv:1.2.3.4|ucweb|android|windows ce|windows mobile/.test(sUserAgent)) {
+                this.isMobile = true
+            } else {
+                //跳转pc端页面
+                this.isMobile = false
+
+            }
+
         },
         async mounted() {
             this.ctx = document.getElementById('stage').getContext('2d');
@@ -231,11 +241,11 @@
                     poses.forEach(({score, keypoints}) => {
                         // console.log(keypoints)
                         if (score >= minPoseConfidence) {
-                                drawKeypoints(keypoints, minPartConfidence, ctx);
+                                // drawKeypoints(keypoints, minPartConfidence, ctx);
                             if (state.options.showSkeleton) {
                                 drawSkeleton(keypoints, minPartConfidence, ctx);
                             }
-                            if(that.gameStart&&that.startCount<0){
+                            if(that.gameStart&&that.startCount<0&&!that.gameResult){
                                 that.testingArmStatus(keypoints)
                             }
 
@@ -246,6 +256,23 @@
                 poseDetectionFrame();
             },
 
+            // mousedown(){
+            //   this.canMove = true
+            // },
+            // mouseup(){
+            //     this.canMove = false
+            // },
+            // //鼠标移动
+            // mouseMoving(e){
+            //     console.log(e)
+            //     if(e.pageY<0){
+            //         this.parallelBars.top = 0
+            //     }else if(e.pageY>videoHeight-20){
+            //         this.parallelBars.top = videoHeight-20
+            //     }else{
+            //         this.parallelBars.top = e.pageY
+            //     }
+            // },
             //移动bar
             barMoving(e){
                 if(e.touches[0].pageY<0){
@@ -274,7 +301,7 @@
                 let angle_right = getIncludedAngle(armRight.endPoint1.x,armRight.endPoint1.y,armRight.endPoint2.x,armRight.endPoint2.y,armRight.intersection.x,armRight.intersection.y)
                 this.saveArmStatus({left:angle_left,right:angle_right})
                let lastFrame = this.armStatusArr.slice(-2)
-                let barsY = this.parallelBars.top
+                let barsY = this.parallelBars.top+10
                 //取两帧用于防止关节点防抖动 && 双手在双杠上
                 if(armLeft.intersection.y<barsY && armLeft.endPoint2.y<barsY && armRight.intersection.y<barsY && armRight.endPoint2.y<barsY ){
                     if(lastFrame.length>1&&((Math.abs(lastFrame[0].left-lastFrame[1].left)<10)||(lastFrame.length>1&&Math.abs(lastFrame[0].right-lastFrame[1].right)<10)) ){
@@ -364,8 +391,18 @@
         margin: 0 auto;
     }
     #video{
-        object-fit: cover;
-        object-position: center center;
+
+    }
+    @keyframes scoreAddA{
+        0% {
+            transform: scale(120%);
+        }
+        50%{
+            transform: scale(140%);
+        }
+        100%{
+            transform: scale(180%);
+        }
     }
     .gamingStage{
         position: absolute;
@@ -383,7 +420,7 @@
             min-width: 3rem;
             text-align: center;
             font-size:2rem;
-            background:rgba(255,255,255,.5);
+            background:rgba(0,0,0,.5);
             border-radius: .5rem;
         }
         .timeBox{
@@ -395,7 +432,7 @@
             min-width: 3rem;
             text-align: center;
             font-size:2rem;
-            background:rgba(255,255,255,.5);
+            background:rgba(0,0,0,.5);
             border-radius: .5rem;
         }
 
@@ -432,11 +469,10 @@
         .readyTips{
             color: #fff;
             font-size: 1.2rem;
-
+            background: rgba(0,0,0,.5);
             font-weight: bold;
             text-align: center;
-            padding: 0 .4rem;
-            padding-top: 1rem;
+            padding:  .4rem;
 
         }
         .startBtn{
@@ -477,6 +513,7 @@
             font-style: italic;
             font-weight: bold;
         }
+
         .btnBox{
             display: flex;
             align-items: center;

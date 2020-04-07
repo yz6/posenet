@@ -482,14 +482,14 @@
         <counts>
           <entry key="html" value="15" />
           <entry key="js" value="135" />
-          <entry key="vue" value="4430" />
+          <entry key="vue" value="4957" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="15" />
           <entry key="JavaScript" value="135" />
-          <entry key="Vue.js" value="4430" />
+          <entry key="Vue.js" value="4957" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -542,17 +542,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/page/ShuangGangQuShen.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="85" column="27" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
+            <state relative-caret-position="116">
+              <caret line="276" column="25" selection-start-line="276" selection-start-column="25" selection-end-line="276" selection-end-column="25" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#video#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#canvas#1;n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#8947#9274#0" />
                 <element signature="e#11313#11533#0" />
-                <element signature="e#13320#13569#0" />
                 <element signature="e#13589#13832#0" />
                 <element signature="e#13848#14683#0" />
               </folding>
@@ -624,8 +622,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/util/posenet_util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1320">
-              <caret line="61" column="7" selection-start-line="61" selection-start-column="7" selection-end-line="61" selection-end-column="7" />
+            <state relative-caret-position="364">
+              <caret line="273" column="43" selection-start-line="273" selection-start-column="41" selection-end-line="273" selection-end-column="43" />
               <folding>
                 <element signature="e#704#758#0" expanded="true" />
               </folding>
@@ -648,28 +646,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>barMoving</find>
-      <find>score</find>
-      <find>readyStage</find>
-      <find>startBtn</find>
-      <find>handleStart</find>
-      <find>startCountDown</find>
-      <find>main</find>
-      <find>gamingStage</find>
-      <find>timeBox</find>
-      <find>cssLoader</find>
-      <find>generateLoaders</find>
-      <find>px</find>
-      <find>setFontSize</find>
-      <find>rem</find>
-      <find>readyTips</find>
-      <find>start</find>
-      <find>gameTime</find>
-      <find>resultModal</find>
-      <find>resultScore</find>
-      <find>resetBtn</find>
-      <find>result</find>
-      <find>gameResult</find>
       <find>testingArmStatus</find>
       <find>gameStart</find>
       <find>startCount</find>
@@ -678,6 +654,28 @@
       <find>finishSport</find>
       <find>结束运动</find>
       <find>resetSport</find>
+      <find>draw</find>
+      <find>multiPoseDetection</find>
+      <find>srcObject</find>
+      <find>state</find>
+      <find>minPoseConfidence</find>
+      <find>single</find>
+      <find>video</find>
+      <find>videoWidth</find>
+      <find>readyTips</find>
+      <find>result</find>
+      <find>y</find>
+      <find>status</find>
+      <find>scoreAdd</find>
+      <find>scoreBox</find>
+      <find>scoreAddA</find>
+      <find>mo</find>
+      <find>mobile</find>
+      <find>isMobile</find>
+      <find>canMove</find>
+      <find>mousedown</find>
+      <find>barMoving</find>
+      <find>mouseMoving</find>
     </findStrings>
     <replaceStrings>
       <replace>岗位发布人</replace>
@@ -812,6 +810,18 @@
               <item name="tice_pad" type="b2602c69:ProjectViewProjectNode" />
               <item name="tice_pad" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tice_pad" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tice_pad" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tice_pad" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tice_pad" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -1123,12 +1133,12 @@
       <workItem from="1585792762096" duration="772000" />
       <workItem from="1585794306219" duration="12285000" />
       <workItem from="1585879207850" duration="1849000" />
-      <workItem from="1586225498647" duration="7863000" />
+      <workItem from="1586225498647" duration="14279000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3119305000" />
+    <option name="totallyTimeSpent" value="3125721000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1141,8 +1151,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="823" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49858758" visible="true" weight="0.067653276" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49858758" visible="true" weight="0.0" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" sideWeight="0.50141245" side_tool="true" weight="0.13389711" />
@@ -1155,7 +1166,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.21614227" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.31053352" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003524" side_tool="true" weight="0.08469945" />
       <window_info anchor="bottom" id="查找" order="11" sideWeight="0.49964765" weight="0.73870057" />
       <window_info anchor="bottom" id="TypeScript" order="12" weight="0.32909605" />
@@ -1405,16 +1416,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/posenet_util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1320">
-          <caret line="61" column="7" selection-start-line="61" selection-start-column="7" selection-end-line="61" selection-end-column="7" />
-          <folding>
-            <element signature="e#704#758#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -1457,19 +1458,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/util/posenet_util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="273" column="43" selection-start-line="273" selection-start-column="41" selection-end-line="273" selection-end-column="43" />
+          <folding>
+            <element signature="e#704#758#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/page/ShuangGangQuShen.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="85" column="27" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
+        <state relative-caret-position="116">
+          <caret line="276" column="25" selection-start-line="276" selection-start-column="25" selection-end-line="276" selection-end-column="25" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#video#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#1;n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#8947#9274#0" />
             <element signature="e#11313#11533#0" />
-            <element signature="e#13320#13569#0" />
             <element signature="e#13589#13832#0" />
             <element signature="e#13848#14683#0" />
           </folding>
