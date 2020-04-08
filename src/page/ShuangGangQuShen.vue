@@ -9,12 +9,7 @@
             <div class="sk-spinner sk-spinner-pulse"></div>
         </div>
         <div id='main' v-show="pageShow" :style="{width:videoWidth+'px',height:videoHeight+'px'}">
-            <video id="video"   playsinline style="display: none"
-                   :style="{  'transform': 'scaleX('+-1+')',
-                   '-ms-transform': 'translateX('+-1+')',
-                  '-moz-transform':'scaleX('+-1+')',
-                  '-o-transform': 'scaleX('+-1+')',
-                  '-webkit-transform': 'scaleX('+-1+')'}">
+            <video id="video"   playsinline style="display: none">
 
             </video>
             <div style="position: relative;width: 100%;height: 100%"  @mousemove="canMove?mouseMoving($event):''" >
