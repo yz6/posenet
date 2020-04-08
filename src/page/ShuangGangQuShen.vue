@@ -25,7 +25,10 @@
                 <div v-else @mousedown="mousedown" @mouseup="mouseup" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
                 <div class="readyStage" v-if="!gameStart ">
                     <div class="readyTips">移动黄线至双杠位置</div>
-                    <div class="startBtn" @click="handleStart">开始</div>
+                    <div style="position:relative">
+                        <div class="startBtn" @click="handleStart">开始</div>
+                        <el-button type="plain" class="RotatCamera" icon="el-icon-refresh" circle></el-button>
+                    </div>
 
                 </div>
                 <div class="startCountDown"  v-else-if="startCount>=0">
@@ -84,6 +87,7 @@
                 gameTime:60,
                 gameStart:false,
                 gameResult:false,
+                frontCamera:true,
                 parallelBars:{
                     top:videoHeight*0.7
                 },
@@ -110,7 +114,7 @@
                         minPartConfidence: 0.5,
                     },
                     multiPoseDetection: {
-                        maxPoseDetections: 5,
+                        maxPoseDetections: 1,
                         minPoseConfidence: 0.15,
                         minPartConfidence: 0.1,
                         nmsRadius: 30.0,
@@ -155,9 +159,9 @@
                         facingMode: that.facingMode,
                         width:  videoWidth,
                         height:  videoHeight,
-                        // 'optional': [{
-                        //     'sourceId':1 //0为前置摄像头，1为后置
-                        // }]
+                        'optional': [{
+                            'sourceId':1 //0为前置摄像头，1为后置
+                        }]
                     },
                 });
                 video.srcObject = stream;
@@ -462,6 +466,7 @@
         background: yellow;
         z-index: 4;
     }
+
     .readyStage{
         position: absolute;
         width: 100%;
@@ -478,6 +483,12 @@
             text-align: center;
             padding:  .4rem;
 
+        }
+        .RotatCamera{
+            position: absolute;
+            right: .2rem;
+            top: 50%;
+            transform: translateY(-50%);
         }
         .startBtn{
             width: 4rem;
