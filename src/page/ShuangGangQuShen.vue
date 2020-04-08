@@ -8,7 +8,7 @@
             </div>
             <div class="sk-spinner sk-spinner-pulse"></div>
         </div>
-        <div id='main' :style="{width:videoWidth+'px',height:videoHeight+'px'}">
+        <div id='main' v-show="pageShow" :style="{width:videoWidth+'px',height:videoHeight+'px'}">
             <video id="video"   playsinline style="display: none" :style="facingMode=='environment'?'':{  'transform': 'scaleX('+-1+')',
                    '-ms-transform': 'translateX('+-1+')',
                   '-moz-transform':'scaleX('+-1+')',
@@ -27,7 +27,7 @@
                     <div class="readyTips">移动黄线至双杠位置</div>
                     <div style="position:relative">
                         <div class="startBtn" @click="handleStart">开始</div>
-                        <el-button type="plain" class="RotatCamera" icon="el-icon-refresh" circle></el-button>
+                        <el-button type="plain" @click="changeFacingmoda" class="RotatCamera" icon="el-icon-refresh" circle></el-button>
                     </div>
 
                 </div>
@@ -71,6 +71,7 @@
     const defaultQuantBytes = 2;
     const defaultMobileNetMultiplier = 0.5;
     const defaultMobileNetStride = 16;
+    const frontCamera=true;
     export default {
         data() {
             return {
@@ -82,12 +83,12 @@
                 canMove:false,
                 videoWidth: videoWidth,
                 videoHeight: videoHeight,
-                facingMode: 'user',
+                facingMode: 'environment',
                 startCount:3,
                 gameTime:60,
                 gameStart:false,
                 gameResult:false,
-                frontCamera:true,
+
                 parallelBars:{
                     top:videoHeight*0.7
                 },
@@ -159,9 +160,7 @@
                         facingMode: that.facingMode,
                         width:  videoWidth,
                         height:  videoHeight,
-                        'optional': [{
-                            'sourceId':1 //0为前置摄像头，1为后置
-                        }]
+
                     },
                 });
                 video.srcObject = stream;
@@ -183,8 +182,18 @@
                     this.state.camera = cameras[0].deviceId;
                 }
             },
+            changeFacingmoda(){
+
+                if(this.facingMode == 'environment'){
+                    this.facingMode = 'user'
+                }else{
+                    this.facingMode = 'environment'
+                }
+                this.bindPage()
+            },
             //页面绑定
             async bindPage() {
+                this.pageShow = false
                 let state = this.state
                 toggleLoadingUI(true);
                 const net = await posenet.load({
@@ -204,6 +213,7 @@
                     info.style.display = 'block';
                     throw e;
                 }
+                this.pageShow = true
                 this.setupGui([], net);
                 this.detectPoseInRealTime();
 
