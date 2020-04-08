@@ -65,8 +65,8 @@
     const videoHeight = videoWidth;
     const windowWidth = document.body.clientWidth
     const windowHeight = document.body.clientHeight
-    const defaultQuantBytes = 4;
-    const defaultMobileNetMultiplier = 0.75;
+    const defaultQuantBytes = 2;
+    const defaultMobileNetMultiplier = 0.5;
     const defaultMobileNetStride = 16;
     export default {
         data() {
@@ -111,7 +111,7 @@
                     },
                     multiPoseDetection: {
                         maxPoseDetections: 5,
-                        minPoseConfidence: 0.2,
+                        minPoseConfidence: 0.15,
                         minPartConfidence: 0.1,
                         nmsRadius: 30.0,
                     },
@@ -274,7 +274,6 @@
             },
             //移动bar
             barMoving(e){
-                console.log(e.touches[0])
                 let offsetY = e.touches[0].pageY
                 if(offsetY<0){
                     this.parallelBars.top = 0
