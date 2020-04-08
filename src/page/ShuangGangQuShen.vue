@@ -84,7 +84,7 @@
                 canMove:false,
                 videoWidth: videoWidth,
                 videoHeight: videoHeight,
-                facingMode: 'user',
+                facingMode: 'environment',
                 startCount:3,
                 gameTime:60,
                 gameStart:false,
@@ -142,7 +142,11 @@
             navigator.getUserMedia = navigator.getUserMedia ||
                 navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             // kick off the demo
-            this.bindPage();
+            let that = this
+
+            setTimeout(function () {
+                that.bindPage();
+            },1000)
 
         },
         methods: {
