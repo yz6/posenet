@@ -61,11 +61,11 @@
         drawKeypoints,
         getIncludedAngle
     } from '../util/posenet_util';
-    const videoWidth = document.body.clientWidth;
-    const videoHeight = document.body.clientHeight;
-    console.log(videoWidth)
-    console.log(videoHeight)
-    const defaultQuantBytes = 2;
+    const videoWidth = document.body.clientWidth>document.body.clientHeight?document.body.clientHeight:document.body.clientWidth;
+    const videoHeight = videoWidth;
+    const windowWidth = document.body.clientWidth
+    const windowHeight = document.body.clientHeight
+    const defaultQuantBytes = 4;
     const defaultMobileNetMultiplier = 0.75;
     const defaultMobileNetStride = 16;
     export default {
@@ -94,7 +94,7 @@
                         architecture: 'MobileNetV1',
                         outputStride: defaultMobileNetStride,
                         outputStrideOpt: [8, 16],
-                        inputResolution: {width:videoWidth/2,height:videoHeight/2},
+                        inputResolution: 500,
                         inputResolutionOpt: [200, 400, 500,600, 800],
                         multiplier: defaultMobileNetMultiplier,
                         multiplierOpt: [0.5, 0.75, 1.01, 1.0],
@@ -110,8 +110,8 @@
                         minPartConfidence: 0.5,
                     },
                     multiPoseDetection: {
-                        maxPoseDetections: 1,
-                        minPoseConfidence: 0.3,
+                        maxPoseDetections: 5,
+                        minPoseConfidence: 0.2,
                         minPartConfidence: 0.1,
                         nmsRadius: 30.0,
                     },
@@ -264,7 +264,6 @@
             },
             //鼠标移动
             mouseMoving(e){
-                console.log(e)
                 if(e.pageY<0){
                     this.parallelBars.top = 0
                 }else if(e.pageY>videoHeight-20){
@@ -275,13 +274,14 @@
             },
             //移动bar
             barMoving(e){
-                console.log(e)
-                if(e.touches[0].pageY<0){
+                console.log(e.touches[0])
+                let offsetY = e.touches[0].pageY
+                if(offsetY<0){
                     this.parallelBars.top = 0
-                }else if(e.touches[0].pageY>videoHeight-20){
+                }else if(offsetY>videoHeight-20){
                     this.parallelBars.top = videoHeight-20
                 }else{
-                    this.parallelBars.top = e.touches[0].pageY
+                    this.parallelBars.top = offsetY
                 }
             },
 
@@ -391,9 +391,13 @@
         display: block;
         margin: 0 auto;
     }
-    #video{
-
+    #main{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform:  translateX(-50%);
     }
+
     @keyframes scoreAddA{
         0% {
             transform: scale(120%);
