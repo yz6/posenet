@@ -9,11 +9,15 @@
             <div class="sk-spinner sk-spinner-pulse"></div>
         </div>
         <div id='main' v-show="pageShow" :style="{width:videoWidth+'px',height:videoHeight+'px'}">
-            <video id="video"   playsinline style="display: none">
+            <video id="video"  style="display: none"  playsinline>
 
             </video>
             <div style="position: relative;width: 100%;height: 100%"  @mousemove="canMove?mouseMoving($event):''" >
-                <canvas id="output">
+                <canvas id="output" :style="facingMode=='user'?'':{  'transform': 'scaleX(-1)',
+                   '-ms-transform': 'translateX(-1)',
+                  '-moz-transform':'scaleX(-1)',
+                  '-o-transform': 'scaleX(-1)',
+                  '-webkit-transform': 'scaleX(-1)'}">
 
                 </canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
@@ -80,7 +84,7 @@
                 canMove:false,
                 videoWidth: videoWidth,
                 videoHeight: videoHeight,
-                facingMode: 'environment',
+                facingMode: 'user',
                 startCount:3,
                 gameTime:60,
                 gameStart:false,
