@@ -88,8 +88,8 @@
         getIncludedAngle
     } from '../util/posenet_util';
 
-    const videoWidth = document.body.clientWidth ;
-    const videoHeight = document.body.clientHeight;
+    const videoWidth = document.body.clientWidth > document.body.clientHeight ? document.body.clientHeight : document.body.clientWidth;
+    const videoHeight = videoWidth;
     const windowWidth = document.body.clientWidth
     const windowHeight = document.body.clientHeight
     const defaultQuantBytes = 2;
@@ -285,7 +285,7 @@
                     poses.forEach(({score, keypoints}) => {
                         // console.log(keypoints)
                         if (score >= minPoseConfidence) {
-                            drawKeypoints(keypoints, minPartConfidence, ctx);
+                            // drawKeypoints(keypoints, minPartConfidence, ctx);
                             if (state.options.showSkeleton) {
                                 drawSkeleton(keypoints, minPartConfidence, ctx);
                             }
