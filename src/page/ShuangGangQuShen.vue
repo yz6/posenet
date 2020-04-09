@@ -1,18 +1,16 @@
 <template>
-    <div >
+    <div>
         <div id="info" style='display:none'>
         </div>
         <div id="loading" style='display:flex'>
-            <div class="spinner-text">
-                加载PoseNet模型...
-            </div>
+
             <div class="sk-spinner sk-spinner-pulse"></div>
         </div>
         <div id='main' v-show="pageShow" :style="{width:videoWidth+'px',height:videoHeight+'px'}">
-            <video id="video"  style="display: none"  playsinline>
+            <video id="video" style="display: none" playsinline>
 
             </video>
-            <div style="position: relative;width: 100%;height: 100%"  @mousemove="canMove?mouseMoving($event):''" >
+            <div style="position: relative;width: 100%;height: 100%" @mousemove="canMove?mouseMoving($event):''">
                 <canvas id="output" :style="facingMode=='user'?'':{  'transform': 'scaleX(-1)',
                    '-ms-transform': 'translateX(-1)',
                   '-moz-transform':'scaleX(-1)',
@@ -22,17 +20,21 @@
                 </canvas>
                 <canvas id="stage" style="position: absolute;left: 0;top: 0;" :width="videoWidth"
                         :height="videoHeight"></canvas>
-                <div v-if="isMobile" @touchmove="barMoving($event)" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
-                <div v-else @mousedown="mousedown" @mouseup="mouseup" class="parallelBars" v-show="!gameResult" :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
+                <div v-if="isMobile" @touchmove="barMoving($event)" class="parallelBars" v-show="!gameResult"
+                     :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
+                <div v-else @mousedown="mousedown" @mouseup="mouseup" class="parallelBars" v-show="!gameResult"
+                     :style="{top:parallelBars.top+'px',weight:videoWidth+'px'}"></div>
                 <div class="readyStage" v-if="!gameStart ">
                     <div class="readyTips">移动黄线至双杠位置</div>
-                    <div style="position:relative">
+                    <div class="startView">
+                        <el-button @click="setAnglePop = true" icon="el-icon-setting" circle></el-button>
                         <div class="startBtn" @click="handleStart">开始</div>
-                        <el-button type="plain" @click="changeFacingmoda" class="RotatCamera" icon="el-icon-refresh" circle></el-button>
+                        <el-button type="plain" @click="changeFacingmoda" class="RotatCamera" icon="el-icon-refresh"
+                                   circle></el-button>
                     </div>
 
                 </div>
-                <div class="startCountDown"  v-else-if="startCount>=0">
+                <div class="startCountDown" v-else-if="startCount>=0">
                     {{startCount<=0?'开始':startCount}}
                 </div>
                 <div class="gamingStage" v-else-if="!gameResult">
@@ -41,7 +43,7 @@
                 </div>
                 <div class="result" v-if="gameResult">
                     <div class="resultModal">
-                        <div class="resultScore" >{{score}}</div>
+                        <div class="resultScore">{{score}}</div>
                         <div class="info">
                             次数
                         </div>
@@ -53,7 +55,27 @@
                 </div>
 
             </div>
+
         </div>
+        <yd-popup :close-on-masker="false" v-model="setAnglePop" position="center" width="80%">
+            <div class="setAnglePopContent">
+                <div class="popItem">
+                    <div class="popItem_label">
+                        伸直角度大于
+                    </div>
+                    <el-input-number :step="5" v-model="straightenAngle" @change="handleChange" :min="90" :max="180"></el-input-number>
+                </div>
+                <div class="popItem">
+                    <dvi class="popItem_label">
+                        弯曲角度小于
+                    </dvi>
+                    <el-input-number :step="5" v-model="bendAngle" @change="handleChange" :min="0" :max="150"></el-input-number>
+                </div>
+                <div  class="popItem">
+                    <el-button type="primary" @click="setAnglePop = false">确定</el-button>
+                </div>
+            </div>
+        </yd-popup>
     </div>
 </template>
 
@@ -65,43 +87,45 @@
         drawKeypoints,
         getIncludedAngle
     } from '../util/posenet_util';
-    const videoWidth = document.body.clientWidth>document.body.clientHeight?document.body.clientHeight:document.body.clientWidth;
-    const videoHeight = videoWidth;
+
+    const videoWidth = document.body.clientWidth ;
+    const videoHeight = document.body.clientHeight;
     const windowWidth = document.body.clientWidth
     const windowHeight = document.body.clientHeight
     const defaultQuantBytes = 2;
-    const defaultMobileNetMultiplier = 0.5;
-    const defaultMobileNetStride = 16;
-    const frontCamera=true;
+    const defaultMobileNetMultiplier = 1;
+    const defaultMobileNetStride = 32;
     export default {
         data() {
             return {
-                score:0,
-                armStatus:0,
-                armStatusArr:[],
+                setAnglePop: false,
+                score: 0,
+                armStatus: 0,
+                armStatusArr: [],
                 ctx: Object,
-                isMobile:false,
-                canMove:false,
+                isMobile: false,
+                canMove: false,
                 videoWidth: videoWidth,
                 videoHeight: videoHeight,
                 facingMode: 'environment',
-                startCount:3,
-                gameTime:60,
-                gameStart:false,
-                gameResult:false,
-
-                parallelBars:{
-                    top:videoHeight*0.7
+                startCount: 3,
+                gameTime: 60,
+                gameStart: false,
+                gameResult: false,
+                straightenAngle: 140,
+                bendAngle: 110,
+                parallelBars: {
+                    top: videoHeight * 0.7
                 },
-                status:0,
+                status: 0,
                 state: {
                     algorithm: 'multi-pose',
                     options: {
-                        architecture: 'MobileNetV1',
+                        architecture: 'ResNet50',
                         outputStride: defaultMobileNetStride,
                         outputStrideOpt: [8, 16],
-                        inputResolution: 500,
-                        inputResolutionOpt: [200, 400, 500,600, 800],
+                        inputResolution: 250,
+                        inputResolutionOpt: [200, 400, 500, 600, 800],
                         multiplier: defaultMobileNetMultiplier,
                         multiplierOpt: [0.5, 0.75, 1.01, 1.0],
                         quantBytes: defaultQuantBytes,
@@ -116,7 +140,7 @@
                         minPartConfidence: 0.5,
                     },
                     multiPoseDetection: {
-                        maxPoseDetections: 1,
+                        maxPoseDetections: 5,
                         minPoseConfidence: 0.15,
                         minPartConfidence: 0.1,
                         nmsRadius: 30.0,
@@ -126,7 +150,7 @@
                 pageShow: false
             }
         },
-        created(){
+        created() {
             var sUserAgent = navigator.userAgent.toLowerCase();
             if (/ipad|iphone|midp|rv:1.2.3.4|ucweb|android|windows ce|windows mobile/.test(sUserAgent)) {
                 this.isMobile = true
@@ -146,7 +170,7 @@
 
             setTimeout(function () {
                 that.bindPage();
-            },1000)
+            }, 1000)
 
         },
         methods: {
@@ -163,8 +187,8 @@
                     'audio': false,
                     'video': {
                         facingMode: that.facingMode,
-                        width:  videoWidth,
-                        height:  videoHeight,
+                        width: videoWidth,
+                        height: videoHeight,
 
                     },
                 });
@@ -187,11 +211,11 @@
                     this.state.camera = cameras[0].deviceId;
                 }
             },
-            changeFacingmoda(){
+            changeFacingmoda() {
 
-                if(this.facingMode == 'environment'){
+                if (this.facingMode == 'environment') {
                     this.facingMode = 'user'
-                }else{
+                } else {
                     this.facingMode = 'environment'
                 }
                 this.bindPage()
@@ -233,6 +257,7 @@
                 const flipPoseHorizontal = true;
                 canvas.width = video.width;
                 canvas.height = video.height;
+
                 async function poseDetectionFrame() {
                     let poses = [];
                     let minPoseConfidence;
@@ -260,88 +285,88 @@
                     poses.forEach(({score, keypoints}) => {
                         // console.log(keypoints)
                         if (score >= minPoseConfidence) {
-                                // drawKeypoints(keypoints, minPartConfidence, ctx);
+                            drawKeypoints(keypoints, minPartConfidence, ctx);
                             if (state.options.showSkeleton) {
                                 drawSkeleton(keypoints, minPartConfidence, ctx);
                             }
-                            if(that.gameStart&&that.startCount<0&&!that.gameResult){
+                            if (that.gameStart && that.startCount < 0 && !that.gameResult) {
                                 that.testingArmStatus(keypoints)
                             }
 
-                            }
+                        }
                     });
                     window.requestAnimationFrame(poseDetectionFrame);
                 }
+
                 poseDetectionFrame();
             },
 
-            mousedown(){
-              this.canMove = true
+            mousedown() {
+                this.canMove = true
             },
-            mouseup(){
+            mouseup() {
                 this.canMove = false
             },
             //鼠标移动
-            mouseMoving(e){
-                if(e.pageY<0){
+            mouseMoving(e) {
+                if (e.pageY < 0) {
                     this.parallelBars.top = 0
-                }else if(e.pageY>videoHeight-20){
-                    this.parallelBars.top = videoHeight-20
-                }else{
+                } else if (e.pageY > videoHeight - 20) {
+                    this.parallelBars.top = videoHeight - 20
+                } else {
                     this.parallelBars.top = e.pageY
                 }
             },
             //移动bar
-            barMoving(e){
+            barMoving(e) {
                 let offsetY = e.touches[0].pageY
-                if(offsetY<0){
+                if (offsetY < 0) {
                     this.parallelBars.top = 0
-                }else if(offsetY>videoHeight-20){
-                    this.parallelBars.top = videoHeight-20
-                }else{
+                } else if (offsetY > videoHeight - 20) {
+                    this.parallelBars.top = videoHeight - 20
+                } else {
                     this.parallelBars.top = offsetY
                 }
             },
 
             //监测手臂状态
-            testingArmStatus(keypoints){
+            testingArmStatus(keypoints) {
                 let armLeft = {
-                    endPoint1 : keypoints[5].position,
-                    intersection : keypoints[7].position,
-                    endPoint2 : keypoints[9].position
+                    endPoint1: keypoints[5].position,
+                    intersection: keypoints[7].position,
+                    endPoint2: keypoints[9].position
                 }
                 let armRight = {
-                    endPoint1 : keypoints[6].position,
-                    intersection : keypoints[8].position,
-                    endPoint2 : keypoints[10].position
+                    endPoint1: keypoints[6].position,
+                    intersection: keypoints[8].position,
+                    endPoint2: keypoints[10].position
                 }
 
-                let angle_left =  getIncludedAngle(armLeft.endPoint1.x,armLeft.endPoint1.y,armLeft.endPoint2.x,armLeft.endPoint2.y,armLeft.intersection.x,armLeft.intersection.y)
-                let angle_right = getIncludedAngle(armRight.endPoint1.x,armRight.endPoint1.y,armRight.endPoint2.x,armRight.endPoint2.y,armRight.intersection.x,armRight.intersection.y)
-                this.saveArmStatus({left:angle_left,right:angle_right})
-               let lastFrame = this.armStatusArr.slice(-2)
-                let barsY = this.parallelBars.top+10
+                let angle_left = getIncludedAngle(armLeft.endPoint1.x, armLeft.endPoint1.y, armLeft.endPoint2.x, armLeft.endPoint2.y, armLeft.intersection.x, armLeft.intersection.y)
+                let angle_right = getIncludedAngle(armRight.endPoint1.x, armRight.endPoint1.y, armRight.endPoint2.x, armRight.endPoint2.y, armRight.intersection.x, armRight.intersection.y)
+                this.saveArmStatus({left: angle_left, right: angle_right})
+                let lastFrame = this.armStatusArr.slice(-2)
+                let barsY = this.parallelBars.top + 10
                 //取两帧用于防止关节点防抖动 && 双手在双杠上
-                if(armLeft.intersection.y<barsY && armLeft.endPoint2.y<barsY && armRight.intersection.y<barsY && armRight.endPoint2.y<barsY ){
-                    if(lastFrame.length>1&&((Math.abs(lastFrame[0].left-lastFrame[1].left)<10)||(lastFrame.length>1&&Math.abs(lastFrame[0].right-lastFrame[1].right)<10)) ){
-                        //判断左手且右手都处于伸直状态
-                        if((lastFrame[0].left>140&&lastFrame[0].left<=180) && (lastFrame[0].right<220&&lastFrame[0].right>=180)){
+                if (armLeft.intersection.y < barsY && armLeft.endPoint2.y < barsY && armRight.intersection.y < barsY && armRight.endPoint2.y < barsY) {
+                    if (lastFrame.length > 1 && ((Math.abs(lastFrame[0].left - lastFrame[1].left) < 10) || (lastFrame.length > 1 && Math.abs(lastFrame[0].right - lastFrame[1].right) < 10))) {
+                        //判断左手或右手都处于伸直状态
+                        if ((lastFrame[0].left > this.straightenAngle && lastFrame[0].left <= 180) || (lastFrame[0].right < 360 - this.straightenAngle && lastFrame[0].right >= 180)) {
                             this.status = 1
                             //判断左手或右手弯曲 计数+1
-                        }else if(this.status==1&&((lastFrame[0].left<110)||(lastFrame[0].right>250))){
+                        } else if (this.status == 1 && ((lastFrame[0].left < this.bendAngle) || (lastFrame[0].right > 360 - this.bendAngle))) {
                             this.status = 0
-                            this.score+=1
+                            this.score += 1
                         }
                     }
-                }else{
+                } else {
                     this.status = 0
                 }
 
 
-
             },
             //存5帧手臂角度
-            saveArmStatus(angle){
+            saveArmStatus(angle) {
                 if (this.armStatusArr.length < 10) { ///存10帧
                     this.armStatusArr.push(angle)
                 } else {
@@ -349,37 +374,37 @@
                 }
             },
             //开始计数
-            handleStart(){
+            handleStart() {
                 this.gameStart = true
                 this.startCountDown()
 
             },
             //开始倒计时
-            startCountDown(){
+            startCountDown() {
                 let that = this
                 this.startCunDownTimer = setInterval(function () {
-                    that.startCount-=1
+                    that.startCount -= 1
                     console.log(that.startCount)
-                    if(that.startCount<0){
+                    if (that.startCount < 0) {
                         clearInterval(that.startCunDownTimer)
                         that.gameCountDown()
                     }
-                },1000)
+                }, 1000)
             },
             //游戏倒计时
-            gameCountDown(){
+            gameCountDown() {
                 let that = this
                 this.gameCountDownTimer = setInterval(function () {
-                    that.gameTime-=1
-                    if(that.gameTime<=0){
+                    that.gameTime -= 1
+                    if (that.gameTime <= 0) {
                         clearInterval(that.gameCountDownTimer)
                         that.gameResult = true
 
                     }
-                },1000)
+                }, 1000)
             },
             //初始化
-            initGame(){
+            initGame() {
                 this.gameStart = false
                 this.gameResult = false
                 this.gameTime = 60
@@ -387,11 +412,11 @@
                 this.score = 0
             },
             //结束运动
-            finishSport(){
+            finishSport() {
                 this.initGame()
             },
             //再次运动
-            resetSport(){
+            resetSport() {
                 this.initGame()
                 this.handleStart()
             }
@@ -405,62 +430,66 @@
         margin: 0;
         padding: 0;
     }
+
     #output {
         display: block;
         margin: 0 auto;
     }
-    #main{
+
+    #main {
         position: absolute;
         top: 0;
         left: 50%;
-        transform:  translateX(-50%);
+        transform: translateX(-50%);
     }
 
-    @keyframes scoreAddA{
+    @keyframes scoreAddA {
         0% {
             transform: scale(120%);
         }
-        50%{
+        50% {
             transform: scale(140%);
         }
-        100%{
+        100% {
             transform: scale(180%);
         }
     }
-    .gamingStage{
+
+    .gamingStage {
         position: absolute;
         width: 100%;
         height: 100%;
         left: 0;
         top: 0;
         z-index: 1;
-        .scoreBox{
-            position:absolute;
+        .scoreBox {
+            position: absolute;
             left: .2rem;
             top: .2rem;
             z-index: 100;
             color: yellow;
             min-width: 3rem;
             text-align: center;
-            font-size:2rem;
-            background:rgba(0,0,0,.5);
+            font-size: 2rem;
+            background: rgba(0, 0, 0, .5);
             border-radius: .5rem;
         }
-        .timeBox{
-            position:absolute;
+        .timeBox {
+            position: absolute;
             right: .2rem;
             top: .2rem;
             z-index: 100;
             color: yellow;
             min-width: 3rem;
             text-align: center;
-            font-size:2rem;
-            background:rgba(0,0,0,.5);
+            font-size: 2rem;
+            background: rgba(0, 0, 0, .5);
             border-radius: .5rem;
         }
 
     }
-    .startCountDown{
+
+    .startCountDown {
         position: absolute;
         left: 0;
         top: 0;
@@ -472,7 +501,8 @@
         justify-content: center;
         color: yellow;
     }
-    .parallelBars{
+
+    .parallelBars {
         position: absolute;
         left: 0;
         height: 10px;
@@ -482,7 +512,7 @@
         z-index: 4;
     }
 
-    .readyStage{
+    .readyStage {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -490,22 +520,23 @@
         top: 0;
         z-index: 1;
 
-        .readyTips{
+        .readyTips {
             color: #fff;
             font-size: 1.2rem;
-            background: rgba(0,0,0,.5);
+            background: rgba(0, 0, 0, .5);
             font-weight: bold;
             text-align: center;
-            padding:  .4rem;
+            padding: .4rem;
 
         }
-        .RotatCamera{
-            position: absolute;
-            right: .2rem;
-            top: 50%;
-            transform: translateY(-50%);
+        .startView {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-top: .5rem;
         }
-        .startBtn{
+
+        .startBtn {
             width: 4rem;
             height: 2rem;
             text-align: center;
@@ -514,11 +545,10 @@
             line-height: 2rem;
             background: #e6a23c;
             color: #fff;
-            margin: 0 auto;
-            margin-top: .5rem;
         }
     }
-    .result{
+
+    .result {
         position: absolute;
         left: 0;
         top: 0;
@@ -528,7 +558,7 @@
         align-items: center;
         justify-content: center;
         z-index: 2;
-        .resultModal{
+        .resultModal {
             color: #000;
             width: 8rem;
             height: 8rem;
@@ -536,7 +566,7 @@
             background: #fff;
             text-align: center;
         }
-        .resultScore{
+        .resultScore {
             padding-top: 1rem;
             font-size: 2rem;
             color: #FF6A00;
@@ -544,12 +574,12 @@
             font-weight: bold;
         }
 
-        .btnBox{
+        .btnBox {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .resetBtn{
+        .resetBtn {
             width: 3rem;
             height: 1rem;
             border-radius: .4rem;
@@ -561,15 +591,35 @@
             margin-top: 1.2rem;
             border: 1px solid #1f7de5;
         }
-        .resetBtn.over{
+
+        .resetBtn.over {
             color: #1f7de5;
             background: #fff;
             margin-right: .2rem;
 
         }
-        .info{
+        .info {
             font-size: .5rem;
             color: #333;
+        }
+    }
+    .yd-popup-content{
+        border-radius: .3rem;
+    }
+    .setAnglePopContent {
+        background: #fff;
+        padding: .2rem;
+        color: #000;
+        .popItem{
+
+            margin: .4rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .popItem_label{
+            font-size: .4rem;
+
         }
     }
 
