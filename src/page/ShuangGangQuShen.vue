@@ -141,8 +141,8 @@
                     },
                     multiPoseDetection: {
                         maxPoseDetections: 5,
-                        minPoseConfidence: 0.15,
-                        minPartConfidence: 0.1,
+                        minPoseConfidence: 0.1,
+                        minPartConfidence: 0.5,
                         nmsRadius: 30.0,
                     },
                     net: null,
@@ -262,7 +262,7 @@
                     let poses = [];
                     let minPoseConfidence;
                     let minPartConfidence;
-                    let all_poses = await state.net.estimatePoses(video, {
+                    let all_poses = await state.net.estimateSinglePose(video, {
                         flipHorizontal: flipPoseHorizontal,
                         decodingMethod: 'multi-person',
                         maxDetections: state.multiPoseDetection.maxPoseDetections,
@@ -285,7 +285,7 @@
                     poses.forEach(({score, keypoints}) => {
                         // console.log(keypoints)
                         if (score >= minPoseConfidence) {
-                            // drawKeypoints(keypoints, minPartConfidence, ctx);
+                            drawKeypoints(keypoints, minPartConfidence, ctx);
                             if (state.options.showSkeleton) {
                                 drawSkeleton(keypoints, minPartConfidence, ctx);
                             }
